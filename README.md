@@ -207,7 +207,7 @@ The application features a sidebar navigation with seven main sections:
 
 ## License
 
-MIT License - see LICENSE file for details
+CC0 1.0 License - see LICENSE file for details
 
 ## Support
 
