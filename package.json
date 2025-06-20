@@ -1,8 +1,7 @@
 {
-    "name": "augmented-software",
-    "version": "1.0.0",
+    "name": "augmented-control-center",
+    "version": "0.0.1",
     "description": "Desktop Dashboard for Augmented Perception (AP) Glasses",
-    "main": "index.js",
     "scripts": {
         "acc": "cd augmented-control-center && npm run dev",
         "acc:install": "cd augmented-control-center && npm install",
@@ -14,7 +13,7 @@
         "postinstall": "npm run acc:install"
     },
     "keywords": [
-        "ar",
+        "augmented-perception",
         "augmented-reality",
         "glasses",
         "control-center",

@@ -1,5 +1,5 @@
 {
-  "name": "ar-glasses-control-center",
+  "name": "augmented-control-center",
   "version": "0.0.1",
   "description": "Desktop Dashboard for Augmented Perception (AP) Glasses",
   "main": "main.js",
@@ -13,7 +13,7 @@
     "dist": "npm run build:css && electron-builder"
   },
   "keywords": [
-    "ar",
+    "augmented-perception",
     "augmented-reality",
     "glasses",
     "control-center",
