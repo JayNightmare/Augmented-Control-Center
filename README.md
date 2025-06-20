@@ -2,234 +2,250 @@
 
 # Augmented Control Center (ACC)
 
+**The Ultimate All-in-One Dashboard for AR Glasses Configuration & Management**
+
+[![License: CC0-1.0](https://img.shields.io/badge/License-CC0%201.0-lightgrey.svg)](https://creativecommons.org/publicdomain/zero/1.0/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-green.svg)](https://nodejs.org/)
+[![Electron](https://img.shields.io/badge/Electron-28+-blue.svg)](https://electronjs.org/)
+
 </div>
 
-A modular desktop application built with Electron.js and TailwindCSS for controlling and debugging AR glasses. This application provides a comprehensive interface for managing all aspects of AR glasses operation, from camera feeds to AI training tools.
+## 🎯 Project Vision
 
-## Features
+The **Augmented Control Center (ACC)** is a comprehensive desktop application designed to be the central hub for configuring, managing, and optimizing Augmented Reality (AR) glasses. Think of it as the "mission control" for your AR experience - a single interface that handles everything from basic setup to advanced AI training.
 
-### 🎯 Dashboard
-- Real-time system status monitoring
-- Battery level, CPU usage, and temperature tracking
-- Active session management
-- Quick access to critical functions
+### Why This Matters
 
-### 📷 Live Camera Feeds & Calibration
-- Dual camera feed display (left and right eye)
-- Real-time calibration tools
-- Auto and manual calibration options
-- Camera status monitoring
+AR glasses are becoming increasingly sophisticated, but managing their configuration, calibration, and AI capabilities often requires multiple tools and technical expertise. ACC solves this by providing:
 
-### ✋ Gesture & Behavior Tracking
-- Hand tracking visualization
-- Eye gaze tracking
-- Gesture recognition display
-- Confidence level indicators
+- **Unified Interface**: One dashboard for all AR glasses operations
+- **AI-Powered Optimization**: Built-in machine learning tools for personalized experiences
+- **Real-Time Monitoring**: Live system health and performance tracking
+- **Developer-Friendly**: Modular architecture for custom extensions
 
-### 🎨 Overlay & Notification Manager
-- Active overlay management
-- Notification queue system
-- Overlay positioning and sizing controls
-- Real-time status updates
+## 🚀 Core Features
 
-### 🤖 AI Training Tools
-- Model training progress tracking
-- Data collection statistics
-- Training session management
-- Model deployment controls
+### 🎯 **Dashboard & System Overview**
+- **Real-time system status** with battery, CPU, and temperature monitoring
+- **Active session management** and quick access to critical functions
+- **Performance analytics** and usage statistics
+- **System health alerts** and predictive maintenance warnings
 
-### ⚙️ Admin Settings
-- System configuration management
-- Security settings
-- Power management options
-- Update channel selection
+### 📷 **Camera Management & Calibration**
+- **Dual camera feed display** (left and right eye synchronization)
+- **Advanced calibration tools** with auto and manual options
+- **Camera status monitoring** and error detection
+- **Image quality optimization** and lens distortion correction
+- **Multi-camera support** for different AR glass models
 
-### 📊 System Monitor
-- Real-time performance metrics
-- Temperature monitoring
-- System logs viewer
-- Resource usage tracking
+### ✋ **Gesture & Behavior Tracking**
+- **Hand tracking visualization** with confidence indicators
+- **Eye gaze tracking** and pupil dilation monitoring
+- **Gesture recognition display** with custom gesture training
+- **Behavioral pattern analysis** for personalized interactions
+- **Accessibility features** for users with different needs
 
-## Tech Stack
+### 🎨 **Overlay & Notification System**
+- **Active overlay management** with drag-and-drop positioning
+- **Smart notification queue** with priority-based routing
+- **Overlay transparency and sizing controls**
+- **Context-aware content delivery**
+- **Multi-language support** for global users
 
-- **Electron.js** - Desktop application framework
-- **TailwindCSS** - Utility-first CSS framework
-- **HTML5 + JavaScript** - Frontend implementation
-- **Node.js** - Backend runtime
+### 🤖 **AI Training Tools** *(Coming Soon)*
+- **Model training progress tracking** with real-time feedback
+- **Data collection statistics** and quality assessment
+- **Training session management** with version control
+- **Model deployment controls** and A/B testing
+- **Custom AI model creation** for specific use cases
+- **Transfer learning** from pre-trained models
+- **Performance optimization** and model fine-tuning
 
-## Project Structure
+### ⚙️ **Advanced Configuration**
+- **System configuration management** with profiles
+- **Security settings** and access control
+- **Power management** and battery optimization
+- **Update channel selection** and version management
+- **Network configuration** and connectivity settings
 
-```
-ar-glasses-control-center/
-├── main.js                 # Electron main process
-├── package.json            # Project configuration
-├── tailwind.config.js      # TailwindCSS configuration
-├── src/
-│   ├── index.html          # Main application interface
-│   ├── styles/
-│   │   ├── main.css        # TailwindCSS source
-│   │   └── output.css      # Compiled CSS
-│   ├── js/
-│   │   └── app.js          # Main application logic
-│   └── modules/            # Future modular components
-│       ├── camera/         # Camera-related modules
-│       ├── tracking/       # Tracking modules
-│       ├── overlay/        # Overlay management
-│       ├── ai/             # AI training tools
-│       ├── admin/          # Admin settings
-│       ├── monitor/        # System monitoring
-│       └── dashboard/      # Dashboard components
-└── assets/                 # Application assets
-```
+### 📊 **System Monitor & Analytics**
+- **Real-time performance metrics** with historical data
+- **Temperature monitoring** and thermal management
+- **System logs viewer** with filtering and search
+- **Resource usage tracking** and optimization suggestions
+- **Predictive analytics** for system maintenance
 
-## Installation
+## 🔮 Planned Features
+
+### **Phase 1: Core Platform** *(Current)*
+- ✅ Basic dashboard and monitoring
+- ✅ Camera feed management
+- ✅ System configuration
+- 🔄 Gesture tracking interface
+- 🔄 Overlay management system
+
+### **Phase 2: AI Integration** *(Q2 2024)*
+- 🤖 **AI Training Studio**: Visual model training interface
+- 🤖 **Gesture Recognition Engine**: Custom gesture creation
+- 🤖 **Behavioral Analytics**: User interaction pattern analysis
+- 🤖 **Smart Calibration**: AI-powered camera and sensor calibration
+- 🤖 **Predictive Maintenance**: ML-based system health prediction
+
+### **Phase 3: Advanced Features** *(Q3 2024)*
+- 🌐 **Cloud Integration**: Sync settings across devices
+- 🔐 **Enterprise Features**: Multi-user management and security
+- 📱 **Mobile Companion**: Smartphone app for remote monitoring
+- 🎮 **Gaming Integration**: Game-specific AR optimizations
+- 🏥 **Accessibility Suite**: Enhanced accessibility features
+
+### **Phase 4: Ecosystem** *(Q4 2024)*
+- 🔌 **Plugin System**: Third-party extensions and integrations
+- 🌍 **Community Hub**: Share configurations and AI models
+- 📊 **Analytics Dashboard**: Advanced usage analytics
+- 🔬 **Research Tools**: Academic and research features
+- 🚀 **API Platform**: Developer tools and SDK
+
+## 🛠️ Tech Stack
+
+- **Electron.js** - Cross-platform desktop application framework
+- **TailwindCSS** - Utility-first CSS framework for modern UI
+- **HTML5 + JavaScript** - Frontend implementation with ES6+ features
+- **Node.js** - Backend runtime with native performance
+- **TensorFlow.js** - Client-side machine learning *(planned)*
+- **WebRTC** - Real-time camera and sensor data handling *(planned)*
+
+## 🚀 Quick Start
+
+### Prerequisites
+- **Node.js** 18.0.0 or higher
+- **npm** 8.0.0 or higher
+- **AR Glasses** (See [insert future repo here] on how to make your own)
+
+### Installation
 
 1. **Clone the repository**
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/JayNightmare/Augmented-Control-Center.git
    cd Augmented-Software
    ```
 
-2. **Install dependencies (both root and augmented-control-center)**
+2. **Install dependencies**
    ```bash
-   npm install
+   # run at root folder
+   npm run acc:install
+   # or cd into `augmented-control-center` and run `npm install`
    ```
-   This will automatically install dependencies in both the root and `augmented-control-center` directories.
 
-3. **Build CSS**
+3. **Build the application**
    ```bash
+   # run at root folder
    npm run acc:build
+   # or cd into `augmented-control-center` and run `npm run build`
    ```
 
-4. **Start the application**
+4. **Start the development server**
    ```bash
-   npm run acc:start
+   # run at root folder
+   npm run acc
+   # or cd into `augmented-control-center` and run `npm start`
    ```
 
-## Development
+### Available Commands
 
-### Quick Start
-```bash
-# Run the development server
-npm run acc
-```
+#### Root Level Commands (Recommended)
+- `npm run acc` - Start development server
+- `npm run acc:install` - Install dependencies
+- `npm run acc:build` - Build CSS
+- `npm run acc:start` - Start Electron application
+- `npm run acc:test` - Run tests
+- `npm run acc:lint` - Run linting
+- `npm run acc:clean` - Clean build files
 
-### Development Mode with Live Reload
-```bash
-npm run acc
-```
+## 🎮 Supported AR Glasses
 
-### Watch Mode (CSS + Electron)
-```bash
-npm run acc:watch
-```
+### Currently Supported
+- **Development Phase**: Generic AR glasses interface
+- **Testing**: Mock data and simulation modes
 
-### Build for Production
-```bash
-npm run acc:dist
-```
+### Planned Support
+- **Meta Quest Pro/3** - Full integration with hand tracking
+- **Microsoft HoloLens 2** - Enterprise features and gesture recognition
+- **Magic Leap 2** - Spatial computing and advanced overlays
+- **Custom AR Glasses** - Open API for third-party integration
 
-## Scripts
+## 🤝 Contributing
 
-### Root Level Commands (Recommended)
-- `npm run acc` - Start the development server in augmented-control-center
-- `npm run acc:install` - Install dependencies in augmented-control-center
-- `npm run acc:build` - Build CSS in augmented-control-center
-- `npm run acc:start` - Start the Electron application
-- `npm run acc:test` - Run tests in augmented-control-center
-- `npm run acc:lint` - Run linting in augmented-control-center
-- `npm run acc:clean` - Run cleanup in augmented-control-center
+We welcome contributions from the AR community! Here's how you can help:
 
-### Direct Commands (if working in augmented-control-center directory)
-- `npm start` - Start the Electron application
-- `npm run dev` - Start in development mode with live reload
-- `npm run build` - Watch and build CSS
-- `npm run build:css` - Build CSS once
-- `npm run watch` - Run CSS watcher and Electron in parallel
-- `npm run package` - Package the application
-- `npm run dist` - Build CSS and package for distribution
+### For Developers
+1. **Fork the repository**
+2. **Create a feature branch**: `git checkout -b feature/amazing-feature`
+3. **Make your changes** following our coding guidelines
+4. **Test thoroughly** with different AR glasses configurations
+5. **Submit a pull request** with detailed description
 
-## Configuration
+### For AR Enthusiasts
+- **Report bugs** and suggest improvements
+- **Share use cases** and feature requests
+- **Test with different AR glasses** and provide feedback
+- **Document your experiences** and configurations
 
-### TailwindCSS
-The application uses a custom TailwindCSS configuration with:
-- Custom color palette for AR theme
-- Extended animations and keyframes
-- Custom spacing and sizing utilities
-- Form and typography plugins
+### For Researchers
+- **Contribute AI models** and training data
+- **Share research findings** on AR interaction patterns
+- **Collaborate on accessibility features**
+- **Help optimize performance** for different hardware
 
-### Electron
-- Window size: 1400x900
-- Node integration enabled
-- Development tools in dev mode
-- Live reload support
+## 📋 Development Roadmap
 
-## Usage
+### **Q2 2025** - Foundation
+- [x] Basic dashboard and monitoring
+- [x] Camera feed management
+- [ ] Gesture tracking interface
+- [ ] System configuration panel
 
-### Navigation
-The application features a sidebar navigation with seven main sections:
-1. **Dashboard** - Overview and system status
-2. **Live Camera Feeds** - Camera management and calibration
-3. **Gesture Tracking** - Hand and eye tracking visualization
-4. **Overlay Manager** - Overlay and notification controls
-5. **AI Training Tools** - AI model management
-6. **Admin Settings** - System configuration
-7. **System Monitor** - Performance monitoring
+### **Q3 2025** - AI Integration
+- [ ] AI Training Studio
+- [ ] Gesture Recognition Engine
+- [ ] Behavioral Analytics
+- [ ] Smart Calibration
 
-### Interactive Features
-- Click on camera feeds to view full-screen
-- Toggle overlay states with enable/disable buttons
-- Monitor real-time system metrics
-- Adjust settings in admin panel
-- View live system logs
+### **TBC** - Advanced Features
+- [ ] Cloud Integration
+- [ ] Enterprise Features
+- [ ] Mobile Companion App
+- [ ] Gaming Integration
 
-## Development Guidelines
+### **TBC** - Ecosystem
+- [ ] Plugin System
+- [ ] Community Hub
+- [ ] Analytics Dashboard
+- [ ] API Platform
 
-### Adding New Modules
-1. Create a new folder in `src/modules/`
-2. Add module-specific HTML, CSS, and JavaScript
-3. Update the main navigation in `index.html`
-4. Add module initialization in `app.js`
+## 📄 License
 
-### Styling
-- Use TailwindCSS utility classes
-- Follow the established color scheme
-- Maintain consistent spacing and typography
-- Use the custom component classes defined in `main.css`
+This project is licensed under the **CC0 1.0 Universal** license - see the [LICENSE](LICENSE) file for details.
 
-### JavaScript
-- Follow the existing class-based architecture
-- Use ES6+ features
-- Maintain modular structure
-- Add proper error handling
+## 🙏 Acknowledgments
 
-## Future Enhancements
+- **Augmented Perception Team** - Vision and leadership
+- **Electron Community** - Cross-platform desktop framework
+- **TailwindCSS Team** - Modern CSS framework
+- **AR Research Community** - Inspiration and technical guidance
 
-- [ ] Real camera feed integration
-- [ ] WebSocket connections for live data
-- [ ] Database integration for settings
-- [ ] Plugin system for custom modules
-- [ ] Multi-language support
-- [ ] Dark/light theme toggle
-- [ ] Export/import configuration
-- [ ] Advanced analytics dashboard
+## 📞 Support & Community
 
-## Contributing
-
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Test thoroughly
-5. Submit a pull request
-
-## License
-
-CC0 1.0 License - see LICENSE file for details
-
-## Support
-
-For support and questions, please open an issue in the repository or contact the development team.
+- **GitHub Issues**: [Report bugs and request features](https://github.com/JayNightmare/Augmented-Control-Center/issues)
+- **Discussions**: [Join the community](https://github.com/JayNightmare/Augmented-Control-Center/discussions)
+- **Documentation**: [Comprehensive guides](https://github.com/JayNightmare/Augmented-Control-Center/wiki) *(coming soon)*
+- **Discord**: Real-time chat and support *(coming soon)*
 
 ---
 
-**Built with ❤️ for AR Development** 
+<div align="center">
+
+**Built with ❤️ for the AR Community**
+
+*Empowering the future of augmented reality, one dashboard at a time.*
+
+</div> 
