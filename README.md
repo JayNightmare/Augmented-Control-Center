@@ -87,43 +87,60 @@ ar-glasses-control-center/
 1. **Clone the repository**
    ```bash
    git clone <repository-url>
-   cd ar-glasses-control-center
+   cd Augmented-Software
    ```
 
-2. **Install dependencies**
+2. **Install dependencies (both root and augmented-control-center)**
    ```bash
    npm install
    ```
+   This will automatically install dependencies in both the root and `augmented-control-center` directories.
 
 3. **Build CSS**
    ```bash
-   npm run build:css
+   npm run acc:build
    ```
 
 4. **Start the application**
    ```bash
-   npm start
+   npm run acc:start
    ```
 
 ## Development
 
+### Quick Start
+```bash
+# Run the development server
+npm run acc
+```
+
 ### Development Mode with Live Reload
 ```bash
-npm run dev
+npm run acc
 ```
 
 ### Watch Mode (CSS + Electron)
 ```bash
-npm run watch
+npm run acc:watch
 ```
 
 ### Build for Production
 ```bash
-npm run dist
+npm run acc:dist
 ```
 
 ## Scripts
 
+### Root Level Commands (Recommended)
+- `npm run acc` - Start the development server in augmented-control-center
+- `npm run acc:install` - Install dependencies in augmented-control-center
+- `npm run acc:build` - Build CSS in augmented-control-center
+- `npm run acc:start` - Start the Electron application
+- `npm run acc:test` - Run tests in augmented-control-center
+- `npm run acc:lint` - Run linting in augmented-control-center
+- `npm run acc:clean` - Run cleanup in augmented-control-center
+
+### Direct Commands (if working in augmented-control-center directory)
 - `npm start` - Start the Electron application
 - `npm run dev` - Start in development mode with live reload
 - `npm run build` - Watch and build CSS

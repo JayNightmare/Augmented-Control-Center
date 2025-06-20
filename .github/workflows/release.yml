@@ -31,13 +31,18 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Validate version tag
         run: |
+          cd augmented-control-center
           # Extract version from tag
           VERSION=${GITHUB_REF#refs/tags/}
           echo "Building version: $VERSION"
@@ -71,10 +76,14 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Setup code signing certificate
         uses: actions/setup-node@v4
@@ -86,6 +95,7 @@ jobs:
           
       - name: Build Windows executable
         run: |
+          cd augmented-control-center
           # Set environment variables for electron-builder
           $env:GH_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
           
@@ -97,9 +107,9 @@ jobs:
         with:
           name: windows-build
           path: |
-            dist/*.exe
-            dist/*.msi
-            dist/*.zip
+            augmented-control-center/dist/*.exe
+            augmented-control-center/dist/*.msi
+            augmented-control-center/dist/*.zip
           retention-days: 30
 
   # Build for macOS (Intel)
@@ -119,10 +129,14 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Setup code signing
         uses: apple-actions/import-codesigning-certs@v1
@@ -132,6 +146,7 @@ jobs:
           
       - name: Build macOS Intel executable
         run: |
+          cd augmented-control-center
           # Set environment variables for electron-builder
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           
@@ -141,7 +156,7 @@ jobs:
       - name: Notarize macOS Intel app
         uses: apple-actions/notarize-app@v1
         with:
-          app-path: dist/*.app
+          app-path: augmented-control-center/dist/*.app
           primary-bundle-id: com.ar.controlcenter
           username: ${{ secrets.APPLE_ID }}
           app-specific-password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
@@ -151,9 +166,9 @@ jobs:
         with:
           name: macos-intel-build
           path: |
-            dist/*.dmg
-            dist/*.app
-            dist/*.zip
+            augmented-control-center/dist/*.dmg
+            augmented-control-center/dist/*.app
+            augmented-control-center/dist/*.zip
           retention-days: 30
 
   # Build for macOS (Apple Silicon)
@@ -173,10 +188,14 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Setup code signing
         uses: apple-actions/import-codesigning-certs@v1
@@ -186,6 +205,7 @@ jobs:
           
       - name: Build macOS Apple Silicon executable
         run: |
+          cd augmented-control-center
           # Set environment variables for electron-builder
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           
@@ -195,7 +215,7 @@ jobs:
       - name: Notarize macOS Apple Silicon app
         uses: apple-actions/notarize-app@v1
         with:
-          app-path: dist/*.app
+          app-path: augmented-control-center/dist/*.app
           primary-bundle-id: com.ar.controlcenter
           username: ${{ secrets.APPLE_ID }}
           app-specific-password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
@@ -205,9 +225,9 @@ jobs:
         with:
           name: macos-arm64-build
           path: |
-            dist/*.dmg
-            dist/*.app
-            dist/*.zip
+            augmented-control-center/dist/*.dmg
+            augmented-control-center/dist/*.app
+            augmented-control-center/dist/*.zip
           retention-days: 30
 
   # Build for Linux
@@ -227,13 +247,18 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Build Linux executable
         run: |
+          cd augmented-control-center
           # Set environment variables for electron-builder
           export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
           
@@ -245,10 +270,10 @@ jobs:
         with:
           name: linux-build
           path: |
-            dist/*.AppImage
-            dist/*.deb
-            dist/*.rpm
-            dist/*.snap
+            augmented-control-center/dist/*.AppImage
+            augmented-control-center/dist/*.deb
+            augmented-control-center/dist/*.rpm
+            augmented-control-center/dist/*.snap
           retention-days: 30
 
   # Create GitHub Release

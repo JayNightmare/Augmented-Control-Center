@@ -1,0 +1,40 @@
+{
+    "name": "augmented-software",
+    "version": "1.0.0",
+    "description": "Desktop Dashboard for Augmented Perception (AP) Glasses",
+    "main": "index.js",
+    "scripts": {
+        "acc": "cd augmented-control-center && npm run dev",
+        "acc:install": "cd augmented-control-center && npm install",
+        "acc:build": "cd augmented-control-center && npm run build:css",
+        "acc:start": "cd augmented-control-center && npm start",
+        "acc:test": "cd augmented-control-center && npm test",
+        "acc:lint": "cd augmented-control-center && npm run lint",
+        "acc:clean": "cd augmented-control-center && npm run clean",
+        "postinstall": "npm run acc:install"
+    },
+    "keywords": [
+        "ar",
+        "augmented-reality",
+        "glasses",
+        "control-center",
+        "electron"
+    ],
+    "author": "Augmented Perception",
+    "license": "CC0-1.0",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/JayNightmare/Augmented-Control-Center.git"
+    },
+    "bugs": {
+        "url": "https://github.com/JayNightmare/Augmented-Control-Center/issues"
+    },
+    "homepage": "https://github.com/JayNightmare/Augmented-Control-Center#readme",
+    "engines": {
+        "node": ">=18.0.0",
+        "npm": ">=8.0.0"
+    },
+    "workspaces": [
+        "augmented-control-center"
+    ]
+}

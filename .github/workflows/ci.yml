@@ -31,26 +31,36 @@ jobs:
           node-version: ${{ env.NODE_VERSION }}
           cache: 'npm'
           
+      - name: Change to project directory
+        run: cd augmented-control-center
+          
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Run linting
         run: |
+          cd augmented-control-center
           # Add ESLint if you have it configured
           # npm run lint
           echo "Linting step - add ESLint configuration if needed"
           
       - name: Run unit tests
         run: |
+          cd augmented-control-center
           # Add unit tests if you have them configured
           # npm test
           echo "Unit tests step - add test configuration if needed"
           
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Verify build artifacts
         run: |
+          cd augmented-control-center
           # Check if CSS was built successfully
           if [ ! -f "src/styles/output.css" ]; then
             echo "❌ CSS build failed - output.css not found"
@@ -89,13 +99,18 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Test Electron build process
         run: |
+          cd augmented-control-center
           # Test that Electron can start without errors
           echo "Testing Electron build process..."
           
@@ -108,11 +123,13 @@ jobs:
           
       - name: Verify package.json scripts
         run: |
+          cd augmented-control-center
           echo "Verifying package.json scripts..."
           npm run --silent
           
       - name: Check for build errors
         run: |
+          cd augmented-control-center
           # Verify that all required files are present
           echo "Checking build artifacts..."
           
@@ -152,13 +169,19 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Run security audit
-        run: npm audit --audit-level=moderate
+        run: |
+          cd augmented-control-center
+          npm audit --audit-level=moderate
         
       - name: Check for outdated packages
-        run: npm outdated || true
+        run: |
+          cd augmented-control-center
+          npm outdated || true
 
   # Code Quality Job
   code-quality:
@@ -177,10 +200,13 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Check file structure
         run: |
+          cd augmented-control-center
           echo "Checking project structure..."
           
           # Check if all required directories exist
@@ -203,6 +229,7 @@ jobs:
           
       - name: Validate package.json
         run: |
+          cd augmented-control-center
           echo "Validating package.json..."
           npm run --silent > /dev/null 2>&1 || {
             echo "❌ package.json validation failed"
@@ -212,6 +239,7 @@ jobs:
           
       - name: Check for common issues
         run: |
+          cd augmented-control-center
           echo "Checking for common issues..."
           
           # Check for hardcoded paths
@@ -244,13 +272,18 @@ jobs:
           cache: 'npm'
           
       - name: Install dependencies
-        run: npm ci
+        run: |
+          cd augmented-control-center
+          npm ci
         
       - name: Build CSS
-        run: npm run build:css
+        run: |
+          cd augmented-control-center
+          npm run build:css
         
       - name: Check bundle size
         run: |
+          cd augmented-control-center
           echo "Checking bundle sizes..."
           
           # Check CSS file size

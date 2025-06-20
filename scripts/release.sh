@@ -72,22 +72,28 @@ check_version_exists() {
 update_package_version() {
     local version=$1
     print_status "Updating package.json version to $version..."
+    cd augmented-control-center
     npm version $version --no-git-tag-version
+    cd ..
     print_success "Package.json updated"
 }
 
 # Function to build the project
 build_project() {
     print_status "Building the project..."
+    cd augmented-control-center
     npm run build:css
+    cd ..
     print_success "Build completed"
 }
 
 # Function to run tests
 run_tests() {
     print_status "Running tests..."
+    cd augmented-control-center
     # Add your test command here if you have tests
     # npm test
+    cd ..
     print_success "Tests completed"
 }
 

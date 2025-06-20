@@ -131,27 +131,33 @@ if "%DRY_RUN%"=="true" (
 
 REM Update package.json version
 echo [INFO] Updating package.json version to %VERSION%...
+cd augmented-control-center
 call npm version %VERSION% --no-git-tag-version
 if errorlevel 1 (
     echo [ERROR] Failed to update package.json version
     exit /b 1
 )
+cd ..
 echo [SUCCESS] Package.json updated
 
 REM Build the project
 echo [INFO] Building the project...
+cd augmented-control-center
 call npm run build:css
 if errorlevel 1 (
     echo [ERROR] Build failed
     exit /b 1
 )
+cd ..
 echo [SUCCESS] Build completed
 
 REM Run tests if requested
 if "%RUN_TESTS%"=="true" (
     echo [INFO] Running tests...
+    cd augmented-control-center
     REM Add your test command here if you have tests
     REM call npm test
+    cd ..
     echo [SUCCESS] Tests completed
 )
 

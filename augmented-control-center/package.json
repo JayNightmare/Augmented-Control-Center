@@ -1,7 +1,7 @@
 {
   "name": "ar-glasses-control-center",
-  "version": "1.0.0",
-  "description": "A modular desktop application for controlling and debugging AR glasses",
+  "version": "0.0.1",
+  "description": "Desktop Dashboard for Augmented Perception (AP) Glasses",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -20,8 +20,8 @@
     "electron",
     "desktop-app"
   ],
-  "author": "AR Development Team",
-  "license": "MIT",
+  "author": "Augmented Perception",
+  "license": "CC0-1.0",
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
@@ -33,7 +33,7 @@
   },
   "build": {
     "appId": "com.ar.controlcenter",
-    "productName": "AR Glasses Control Center",
+    "productName": "Augmented Perception Control Center",
     "directories": {
       "output": "dist"
     },
