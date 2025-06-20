@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🚀 GitHub Discussions
+    url: https://github.com/JayNightmare/Augmented-Control-Center/discussions
+    about: Please ask and answer questions here.
+  - name: 📧 Email Support
+    url: mailto:support@ar-control-center.com
+    about: Contact us directly via email for urgent issues.
+  - name: 💬 Discord Community
+    url: https://discord.gg/ar-control-center
+    about: Join our Discord community for real-time support. 

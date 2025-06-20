@@ -1,0 +1,348 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'  # Triggers on version tags like v1.0.0, v2.1.3, etc.
+
+# Set permissions for the workflow
+permissions:
+  contents: write
+  actions: read
+
+env:
+  NODE_VERSION: '18'
+  ELECTRON_VERSION: '28.0.0'
+
+jobs:
+  # Pre-release validation
+  validate:
+    name: Validate Release
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Validate version tag
+        run: |
+          # Extract version from tag
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "Building version: $VERSION"
+          
+          # Validate version format
+          if [[ ! $VERSION =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "❌ Invalid version format: $VERSION"
+            echo "Expected format: vX.Y.Z (e.g., v1.0.0)"
+            exit 1
+          fi
+          
+          # Update package.json version
+          npm version $VERSION --no-git-tag-version
+          
+          echo "✅ Version validation passed: $VERSION"
+
+  # Build for Windows
+  build-windows:
+    name: Build Windows
+    runs-on: windows-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Setup code signing certificate
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+        env:
+          WIN_CSC_LINK: ${{ secrets.WIN_CERT }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CERT_PASS }}
+          
+      - name: Build Windows executable
+        run: |
+          # Set environment variables for electron-builder
+          $env:GH_TOKEN = "${{ secrets.GITHUB_TOKEN }}"
+          
+          # Build for Windows
+          npm run dist -- --win --x64
+          
+      - name: Upload Windows artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-build
+          path: |
+            dist/*.exe
+            dist/*.msi
+            dist/*.zip
+          retention-days: 30
+
+  # Build for macOS (Intel)
+  build-macos-intel:
+    name: Build macOS (Intel)
+    runs-on: macos-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Setup code signing
+        uses: apple-actions/import-codesigning-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERT }}
+          p12-password: ${{ secrets.P12_PASS }}
+          
+      - name: Build macOS Intel executable
+        run: |
+          # Set environment variables for electron-builder
+          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          
+          # Build for macOS Intel
+          npm run dist -- --mac --x64
+          
+      - name: Notarize macOS Intel app
+        uses: apple-actions/notarize-app@v1
+        with:
+          app-path: dist/*.app
+          primary-bundle-id: com.ar.controlcenter
+          username: ${{ secrets.APPLE_ID }}
+          app-specific-password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          
+      - name: Upload macOS Intel artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-intel-build
+          path: |
+            dist/*.dmg
+            dist/*.app
+            dist/*.zip
+          retention-days: 30
+
+  # Build for macOS (Apple Silicon)
+  build-macos-arm64:
+    name: Build macOS (Apple Silicon)
+    runs-on: macos-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Setup code signing
+        uses: apple-actions/import-codesigning-certs@v1
+        with:
+          p12-file-base64: ${{ secrets.APPLE_CERT }}
+          p12-password: ${{ secrets.P12_PASS }}
+          
+      - name: Build macOS Apple Silicon executable
+        run: |
+          # Set environment variables for electron-builder
+          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          
+          # Build for macOS Apple Silicon
+          npm run dist -- --mac --arm64
+          
+      - name: Notarize macOS Apple Silicon app
+        uses: apple-actions/notarize-app@v1
+        with:
+          app-path: dist/*.app
+          primary-bundle-id: com.ar.controlcenter
+          username: ${{ secrets.APPLE_ID }}
+          app-specific-password: ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
+          
+      - name: Upload macOS Apple Silicon artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-arm64-build
+          path: |
+            dist/*.dmg
+            dist/*.app
+            dist/*.zip
+          retention-days: 30
+
+  # Build for Linux
+  build-linux:
+    name: Build Linux
+    runs-on: ubuntu-latest
+    needs: validate
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Build Linux executable
+        run: |
+          # Set environment variables for electron-builder
+          export GH_TOKEN="${{ secrets.GITHUB_TOKEN }}"
+          
+          # Build for Linux
+          npm run dist -- --linux --x64
+          
+      - name: Upload Linux artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-build
+          path: |
+            dist/*.AppImage
+            dist/*.deb
+            dist/*.rpm
+            dist/*.snap
+          retention-days: 30
+
+  # Create GitHub Release
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-windows, build-macos-intel, build-macos-arm64, build-linux]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          
+      - name: Extract version
+        run: |
+          VERSION=${GITHUB_REF#refs/tags/}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "Building release for version: $VERSION"
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ env.VERSION }}
+          name: "AR Glasses Control Center ${{ env.VERSION }}"
+          body: |
+            ## 🚀 AR Glasses Control Center ${{ env.VERSION }}
+            
+            ### What's New
+            - Enhanced AR glasses control interface
+            - Improved camera feed management
+            - Advanced gesture tracking capabilities
+            - Real-time system monitoring
+            - AI training tools integration
+            
+            ### Downloads
+            Choose the appropriate version for your platform:
+            
+            **Windows:**
+            - Installer (.exe) - Recommended for most users
+            - Portable (.zip) - No installation required
+            
+            **macOS:**
+            - Intel Mac (.dmg) - For Intel-based Macs
+            - Apple Silicon (.dmg) - For M1/M2 Macs
+            
+            **Linux:**
+            - AppImage (.AppImage) - Universal Linux package
+            - Debian (.deb) - For Ubuntu/Debian systems
+            - RPM (.rpm) - For Red Hat/Fedora systems
+            
+            ### Installation
+            1. Download the appropriate file for your platform
+            2. Run the installer or extract the portable version
+            3. Launch the AR Glasses Control Center
+            
+            ### System Requirements
+            - **Windows:** Windows 10 or later (64-bit)
+            - **macOS:** macOS 10.15 or later
+            - **Linux:** Ubuntu 18.04+, Fedora 30+, or similar
+            
+            ### Support
+            For issues and feature requests, please visit our [GitHub repository](https://github.com/JayNightmare/Augmented-Control-Center).
+            
+            ---
+            *Built with ❤️ for AR Development*
+          draft: false
+          prerelease: false
+          files: |
+            artifacts/windows-build/*
+            artifacts/macos-intel-build/*
+            artifacts/macos-arm64-build/*
+            artifacts/linux-build/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  # Post-release cleanup
+  cleanup:
+    name: Cleanup
+    runs-on: ubuntu-latest
+    needs: create-release
+    if: always()
+    
+    steps:
+      - name: Cleanup artifacts
+        run: |
+          echo "🧹 Cleaning up build artifacts..."
+          echo "✅ Release process completed!"
+          
+      - name: Notify completion
+        run: |
+          echo "🎉 Release ${{ env.VERSION }} has been published successfully!"
+          echo "📦 All platform builds completed and uploaded"
+          echo "🔗 Release available at: https://github.com/JayNightmare/Augmented-Control-Center/releases/tag/${{ env.VERSION }}" 

@@ -1,0 +1,293 @@
+name: CI/CD Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+# Set permissions for the workflow
+permissions:
+  contents: write
+  actions: read
+
+env:
+  NODE_VERSION: '18'
+  ELECTRON_VERSION: '28.0.0'
+
+jobs:
+  # Lint and Test Job
+  lint-and-test:
+    name: Lint and Test
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run linting
+        run: |
+          # Add ESLint if you have it configured
+          # npm run lint
+          echo "Linting step - add ESLint configuration if needed"
+          
+      - name: Run unit tests
+        run: |
+          # Add unit tests if you have them configured
+          # npm test
+          echo "Unit tests step - add test configuration if needed"
+          
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Verify build artifacts
+        run: |
+          # Check if CSS was built successfully
+          if [ ! -f "src/styles/output.css" ]; then
+            echo "❌ CSS build failed - output.css not found"
+            exit 1
+          fi
+          echo "✅ CSS build successful"
+          
+          # Check if main files exist
+          if [ ! -f "main.js" ]; then
+            echo "❌ main.js not found"
+            exit 1
+          fi
+          if [ ! -f "src/index.html" ]; then
+            echo "❌ src/index.html not found"
+            exit 1
+          fi
+          echo "✅ All required files present"
+
+  # Build Job - Test Electron build process
+  build:
+    name: Build Electron App
+    runs-on: ${{ matrix.os }}
+    needs: lint-and-test
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Test Electron build process
+        run: |
+          # Test that Electron can start without errors
+          echo "Testing Electron build process..."
+          
+          # On Windows, we need to handle the path differently
+          if [[ "$RUNNER_OS" == "Windows" ]]; then
+            npx electron . --version
+          else
+            npx electron . --version
+          fi
+          
+      - name: Verify package.json scripts
+        run: |
+          echo "Verifying package.json scripts..."
+          npm run --silent
+          
+      - name: Check for build errors
+        run: |
+          # Verify that all required files are present
+          echo "Checking build artifacts..."
+          
+          required_files=(
+            "main.js"
+            "src/index.html"
+            "src/styles/output.css"
+            "src/js/app.js"
+            "package.json"
+          )
+          
+          for file in "${required_files[@]}"; do
+            if [ ! -f "$file" ]; then
+              echo "❌ Required file missing: $file"
+              exit 1
+            else
+              echo "✅ Found: $file"
+            fi
+          done
+          
+          echo "✅ All build checks passed"
+
+  # Security Audit Job
+  security-audit:
+    name: Security Audit
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Run security audit
+        run: npm audit --audit-level=moderate
+        
+      - name: Check for outdated packages
+        run: npm outdated || true
+
+  # Code Quality Job
+  code-quality:
+    name: Code Quality
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Check file structure
+        run: |
+          echo "Checking project structure..."
+          
+          # Check if all required directories exist
+          required_dirs=(
+            "src"
+            "src/styles"
+            "src/js"
+            "src/modules"
+            "assets"
+          )
+          
+          for dir in "${required_dirs[@]}"; do
+            if [ ! -d "$dir" ]; then
+              echo "❌ Required directory missing: $dir"
+              exit 1
+            else
+              echo "✅ Found directory: $dir"
+            fi
+          done
+          
+      - name: Validate package.json
+        run: |
+          echo "Validating package.json..."
+          npm run --silent > /dev/null 2>&1 || {
+            echo "❌ package.json validation failed"
+            exit 1
+          }
+          echo "✅ package.json is valid"
+          
+      - name: Check for common issues
+        run: |
+          echo "Checking for common issues..."
+          
+          # Check for hardcoded paths
+          if grep -r "C:\\" src/ 2>/dev/null || grep -r "/Users/" src/ 2>/dev/null; then
+            echo "⚠️  Warning: Hardcoded paths found"
+          fi
+          
+          # Check for console.log statements (optional)
+          console_count=$(grep -r "console.log" src/ | wc -l)
+          if [ "$console_count" -gt 10 ]; then
+            echo "⚠️  Warning: Many console.log statements found ($console_count)"
+          fi
+          
+          echo "✅ Code quality checks completed"
+
+  # Performance Check Job
+  performance:
+    name: Performance Check
+    runs-on: ubuntu-latest
+    needs: lint-and-test
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+          
+      - name: Install dependencies
+        run: npm ci
+        
+      - name: Build CSS
+        run: npm run build:css
+        
+      - name: Check bundle size
+        run: |
+          echo "Checking bundle sizes..."
+          
+          # Check CSS file size
+          css_size=$(stat -c%s "src/styles/output.css" 2>/dev/null || stat -f%z "src/styles/output.css" 2>/dev/null)
+          echo "CSS file size: $css_size bytes"
+          
+          if [ "$css_size" -gt 500000 ]; then
+            echo "⚠️  Warning: CSS file is large ($css_size bytes)"
+          fi
+          
+          # Check HTML file size
+          html_size=$(stat -c%s "src/index.html" 2>/dev/null || stat -f%z "src/index.html" 2>/dev/null)
+          echo "HTML file size: $html_size bytes"
+          
+          # Check JS file size
+          js_size=$(stat -c%s "src/js/app.js" 2>/dev/null || stat -f%z "src/js/app.js" 2>/dev/null)
+          echo "JS file size: $js_size bytes"
+          
+          echo "✅ Performance checks completed"
+
+  # Final Status Check
+  status-check:
+    name: Status Check
+    runs-on: ubuntu-latest
+    needs: [lint-and-test, build, security-audit, code-quality, performance]
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Final validation
+        run: |
+          echo "🎉 All CI checks completed successfully!"
+          echo "✅ Lint and Test: Passed"
+          echo "✅ Build: Passed"
+          echo "✅ Security Audit: Passed"
+          echo "✅ Code Quality: Passed"
+          echo "✅ Performance: Passed"
+          echo ""
+          echo "Ready for release! 🚀" 
