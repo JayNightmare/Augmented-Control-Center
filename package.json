@@ -9,8 +9,7 @@
         "acc:start": "cd augmented-control-center && npm start",
         "acc:test": "cd augmented-control-center && npm test",
         "acc:lint": "cd augmented-control-center && npm run lint",
-        "acc:clean": "cd augmented-control-center && npm run clean",
-        "postinstall": "npm run acc:install"
+        "acc:clean": "cd augmented-control-center && npm run clean"
     },
     "keywords": [
         "augmented-perception",
