@@ -1,4 +1,8 @@
-# AR Glasses Control Center
+<div align="center">
+
+# Augmented Control Center (ACC)
+
+</div>
 
 A modular desktop application built with Electron.js and TailwindCSS for controlling and debugging AR glasses. This application provides a comprehensive interface for managing all aspects of AR glasses operation, from camera feeds to AI training tools.
 
@@ -61,21 +65,21 @@ ar-glasses-control-center/
 ├── package.json            # Project configuration
 ├── tailwind.config.js      # TailwindCSS configuration
 ├── src/
-│   ├── index.html         # Main application interface
+│   ├── index.html          # Main application interface
 │   ├── styles/
-│   │   ├── main.css       # TailwindCSS source
-│   │   └── output.css     # Compiled CSS
+│   │   ├── main.css        # TailwindCSS source
+│   │   └── output.css      # Compiled CSS
 │   ├── js/
-│   │   └── app.js         # Main application logic
-│   └── modules/           # Future modular components
-│       ├── camera/        # Camera-related modules
-│       ├── tracking/      # Tracking modules
-│       ├── overlay/       # Overlay management
-│       ├── ai/           # AI training tools
-│       ├── admin/        # Admin settings
-│       ├── monitor/      # System monitoring
-│       └── dashboard/    # Dashboard components
-└── assets/               # Application assets
+│   │   └── app.js          # Main application logic
+│   └── modules/            # Future modular components
+│       ├── camera/         # Camera-related modules
+│       ├── tracking/       # Tracking modules
+│       ├── overlay/        # Overlay management
+│       ├── ai/             # AI training tools
+│       ├── admin/          # Admin settings
+│       ├── monitor/        # System monitoring
+│       └── dashboard/      # Dashboard components
+└── assets/                 # Application assets
 ```
 
 ## Installation
