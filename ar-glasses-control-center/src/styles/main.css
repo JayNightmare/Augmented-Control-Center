@@ -1,0 +1,268 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom styles for AR Glasses Control Center */
+@layer components {
+    .nav-item {
+        @apply flex items-center space-x-3 px-4 py-3 text-gray-300 hover:bg-gray-700 hover:text-white rounded-lg transition-colors duration-200;
+    }
+    
+    .nav-item.active {
+        @apply bg-blue-600 text-white;
+    }
+    
+    .nav-item svg {
+        @apply flex-shrink-0;
+    }
+    
+    .content-section {
+        @apply hidden h-full overflow-y-auto;
+    }
+    
+    .content-section.active {
+        @apply block;
+    }
+    
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+        @apply bg-gray-800;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+        @apply bg-gray-600 rounded;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+        @apply bg-gray-500;
+    }
+    
+    /* Animation for live feeds */
+    .animate-pulse {
+        animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: .5;
+        }
+    }
+    
+    /* Custom button styles */
+    .btn-primary {
+        @apply bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded transition-colors duration-200;
+    }
+    
+    .btn-secondary {
+        @apply bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded transition-colors duration-200;
+    }
+    
+    .btn-success {
+        @apply bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded transition-colors duration-200;
+    }
+    
+    .btn-warning {
+        @apply bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded transition-colors duration-200;
+    }
+    
+    .btn-danger {
+        @apply bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition-colors duration-200;
+    }
+    
+    /* Card styles */
+    .card {
+        @apply bg-gray-800 rounded-lg p-6 border border-gray-700;
+    }
+    
+    .card-header {
+        @apply text-xl font-semibold mb-4;
+    }
+    
+    /* Status indicators */
+    .status-online {
+        @apply text-green-400;
+    }
+    
+    .status-offline {
+        @apply text-red-400;
+    }
+    
+    .status-warning {
+        @apply text-yellow-400;
+    }
+    
+    .status-info {
+        @apply text-blue-400;
+    }
+    
+    /* Progress bars */
+    .progress-bar {
+        @apply w-full bg-gray-700 rounded-full h-2;
+    }
+    
+    .progress-fill {
+        @apply h-2 rounded-full transition-all duration-300;
+    }
+    
+    .progress-fill.blue {
+        @apply bg-blue-600;
+    }
+    
+    .progress-fill.green {
+        @apply bg-green-600;
+    }
+    
+    .progress-fill.yellow {
+        @apply bg-yellow-600;
+    }
+    
+    .progress-fill.red {
+        @apply bg-red-600;
+    }
+    
+    /* Form elements */
+    .form-input {
+        @apply w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    }
+    
+    .form-select {
+        @apply w-full bg-gray-700 border border-gray-600 rounded px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+    }
+    
+    .form-checkbox {
+        @apply bg-gray-700 border border-gray-600 rounded focus:ring-2 focus:ring-blue-500;
+    }
+    
+    /* Grid layouts */
+    .grid-auto-fit {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+    
+    .grid-auto-fill {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    
+    /* Responsive utilities */
+    @media (max-width: 768px) {
+        .sidebar {
+            @apply w-16;
+        }
+        
+        .sidebar .nav-text {
+            @apply hidden;
+        }
+        
+        .main-content {
+            @apply ml-16;
+        }
+    }
+    
+    /* Dark theme enhancements */
+    .dark-theme {
+        @apply bg-gray-900 text-white;
+    }
+    
+    .dark-theme .card {
+        @apply bg-gray-800 border-gray-700;
+    }
+    
+    .dark-theme .form-input,
+    .dark-theme .form-select {
+        @apply bg-gray-700 border-gray-600 text-white;
+    }
+    
+    /* Loading states */
+    .loading {
+        @apply animate-pulse;
+    }
+    
+    .loading-skeleton {
+        @apply bg-gray-700 rounded animate-pulse;
+    }
+    
+    /* Notification styles */
+    .notification {
+        @apply p-4 rounded-lg mb-4;
+    }
+    
+    .notification.info {
+        @apply bg-blue-600 text-white;
+    }
+    
+    .notification.success {
+        @apply bg-green-600 text-white;
+    }
+    
+    .notification.warning {
+        @apply bg-yellow-600 text-white;
+    }
+    
+    .notification.error {
+        @apply bg-red-600 text-white;
+    }
+    
+    /* Tooltip styles */
+    .tooltip {
+        @apply relative;
+    }
+    
+    .tooltip .tooltip-text {
+        @apply invisible absolute z-10 py-2 px-3 text-sm text-white bg-gray-900 rounded-lg shadow-sm opacity-0 transition-opacity duration-300;
+        bottom: 125%;
+        left: 50%;
+        margin-left: -60px;
+    }
+    
+    .tooltip:hover .tooltip-text {
+        @apply visible opacity-100;
+    }
+    
+    /* Modal styles */
+    .modal {
+        @apply fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50;
+    }
+    
+    .modal-content {
+        @apply bg-gray-800 rounded-lg p-6 max-w-md w-full mx-4;
+    }
+    
+    .modal-header {
+        @apply flex justify-between items-center mb-4;
+    }
+    
+    .modal-title {
+        @apply text-xl font-semibold;
+    }
+    
+    .modal-close {
+        @apply text-gray-400 hover:text-white cursor-pointer;
+    }
+    
+    /* Table styles */
+    .table {
+        @apply w-full text-sm text-left;
+    }
+    
+    .table th {
+        @apply px-6 py-3 text-xs font-medium text-gray-400 uppercase tracking-wider;
+    }
+    
+    .table td {
+        @apply px-6 py-4 whitespace-nowrap text-sm text-gray-300;
+    }
+    
+    .table tbody tr {
+        @apply bg-gray-800 border-b border-gray-700;
+    }
+    
+    .table tbody tr:hover {
+        @apply bg-gray-700;
+    }
+} 

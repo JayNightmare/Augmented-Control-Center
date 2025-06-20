@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AR Glasses Control Center</title>
+    <link href="./styles/output.css" rel="stylesheet">
+</head>
+<body class="bg-gray-900 text-white">
+    <div class="flex h-screen">
+        <!-- Sidebar -->
+        <div class="w-64 bg-gray-800 border-r border-gray-700">
+            <div class="p-6">
+                <h1 class="text-xl font-bold text-blue-400">AR Control Center</h1>
+            </div>
+            
+            <nav class="mt-6">
+                <div class="px-4 space-y-2">
+                    <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v6H8V5z"></path>
+                        </svg>
+                        <span>Dashboard</span>
+                    </a>
+                    
+                    <a href="#camera" class="nav-item" data-section="camera">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path>
+                        </svg>
+                        <span>Live Camera Feeds</span>
+                    </a>
+                    
+                    <a href="#tracking" class="nav-item" data-section="tracking">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>Gesture Tracking</span>
+                    </a>
+                    
+                    <a href="#overlay" class="nav-item" data-section="overlay">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m-9 0h10m-10 0a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V6a2 2 0 00-2-2"></path>
+                        </svg>
+                        <span>Overlay Manager</span>
+                    </a>
+                    
+                    <a href="#ai" class="nav-item" data-section="ai">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                        </svg>
+                        <span>AI Training Tools</span>
+                    </a>
+                    
+                    <a href="#admin" class="nav-item" data-section="admin">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                        </svg>
+                        <span>Admin Settings</span>
+                    </a>
+                    
+                    <a href="#monitor" class="nav-item" data-section="monitor">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                        </svg>
+                        <span>System Monitor</span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <div class="flex-1 overflow-hidden">
+            <!-- Content sections -->
+            <div id="dashboard" class="content-section active">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Dashboard</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold mb-4">System Status</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span>AR Glasses</span>
+                                    <span class="text-green-400">Connected</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Battery</span>
+                                    <span class="text-yellow-400">78%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>WiFi</span>
+                                    <span class="text-green-400">Connected</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold mb-4">Performance</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span>CPU Usage</span>
+                                    <span class="text-blue-400">45%</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Memory</span>
+                                    <span class="text-blue-400">2.1GB</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Temperature</span>
+                                    <span class="text-green-400">42°C</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-lg font-semibold mb-4">Active Sessions</h3>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Camera Feeds</span>
+                                    <span class="text-green-400">2 Active</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Tracking</span>
+                                    <span class="text-green-400">Enabled</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>AI Processing</span>
+                                    <span class="text-yellow-400">Training</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="camera" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Live Camera Feeds & Calibration</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Left Eye Camera</h3>
+                            <div class="bg-gray-700 h-64 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-blue-500 rounded-full mx-auto mb-4 animate-pulse"></div>
+                                    <p class="text-gray-400">Live Feed</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Resolution</span>
+                                    <span>1920x1080</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>FPS</span>
+                                    <span>30</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Calibration</span>
+                                    <span class="text-green-400">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Right Eye Camera</h3>
+                            <div class="bg-gray-700 h-64 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="w-16 h-16 bg-blue-500 rounded-full mx-auto mb-4 animate-pulse"></div>
+                                    <p class="text-gray-400">Live Feed</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Resolution</span>
+                                    <span>1920x1080</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>FPS</span>
+                                    <span>30</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Calibration</span>
+                                    <span class="text-green-400">✓</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">Calibration Tools</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Auto Calibrate</button>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Manual Calibrate</button>
+                            <button class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Reset Calibration</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tracking" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Gesture & Behavior Tracking</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Hand Tracking</h3>
+                            <div class="bg-gray-700 h-64 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="w-32 h-32 border-2 border-green-400 rounded-full mx-auto mb-4 relative">
+                                        <div class="absolute top-1/4 left-1/4 w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <div class="absolute top-1/2 right-1/4 w-2 h-2 bg-green-400 rounded-full"></div>
+                                        <div class="absolute bottom-1/4 left-1/2 w-2 h-2 bg-green-400 rounded-full"></div>
+                                    </div>
+                                    <p class="text-gray-400">Hand Position Tracking</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Tracking Status</span>
+                                    <span class="text-green-400">Active</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Confidence</span>
+                                    <span>94%</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Eye Tracking</h3>
+                            <div class="bg-gray-700 h-64 rounded-lg flex items-center justify-center">
+                                <div class="text-center">
+                                    <div class="flex space-x-8">
+                                        <div class="w-8 h-8 border-2 border-blue-400 rounded-full relative">
+                                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        </div>
+                                        <div class="w-8 h-8 border-2 border-blue-400 rounded-full relative">
+                                            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"></div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-400 mt-4">Eye Gaze Tracking</p>
+                                </div>
+                            </div>
+                            <div class="mt-4 space-y-2">
+                                <div class="flex justify-between">
+                                    <span>Tracking Status</span>
+                                    <span class="text-green-400">Active</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span>Confidence</span>
+                                    <span>87%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">Gesture Recognition</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="text-center p-4 bg-gray-700 rounded">
+                                <div class="text-2xl mb-2">👆</div>
+                                <p>Point</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-700 rounded">
+                                <div class="text-2xl mb-2">✋</div>
+                                <p>Open Hand</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-700 rounded">
+                                <div class="text-2xl mb-2">👊</div>
+                                <p>Fist</p>
+                            </div>
+                            <div class="text-center p-4 bg-gray-700 rounded">
+                                <div class="text-2xl mb-2">✌️</div>
+                                <p>Peace</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="overlay" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Overlay & Notification Manager</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Active Overlays</h3>
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
+                                    <div>
+                                        <h4 class="font-medium">Navigation Arrow</h4>
+                                        <p class="text-sm text-gray-400">Direction indicator</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-green-400 text-sm">Active</span>
+                                        <button class="bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-sm">Disable</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
+                                    <div>
+                                        <h4 class="font-medium">Info Panel</h4>
+                                        <p class="text-sm text-gray-400">Context information</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-green-400 text-sm">Active</span>
+                                        <button class="bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-sm">Disable</button>
+                                    </div>
+                                </div>
+                                
+                                <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
+                                    <div>
+                                        <h4 class="font-medium">Gesture Hints</h4>
+                                        <p class="text-sm text-gray-400">Help overlay</p>
+                                    </div>
+                                    <div class="flex items-center space-x-2">
+                                        <span class="text-yellow-400 text-sm">Paused</span>
+                                        <button class="bg-green-600 hover:bg-green-700 px-2 py-1 rounded text-sm">Enable</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Notification Queue</h3>
+                            <div class="space-y-3">
+                                <div class="p-3 bg-blue-600 rounded">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium">System Update</h4>
+                                            <p class="text-sm opacity-90">New firmware available</p>
+                                        </div>
+                                        <span class="text-xs">2 min ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-3 bg-yellow-600 rounded">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium">Low Battery</h4>
+                                            <p class="text-sm opacity-90">Battery at 15%</p>
+                                        </div>
+                                        <span class="text-xs">5 min ago</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="p-3 bg-green-600 rounded">
+                                    <div class="flex justify-between items-start">
+                                        <div>
+                                            <h4 class="font-medium">Calibration Complete</h4>
+                                            <p class="text-sm opacity-90">Eye tracking calibrated</p>
+                                        </div>
+                                        <span class="text-xs">10 min ago</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">Overlay Controls</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Opacity</label>
+                                <input type="range" min="0" max="100" value="80" class="w-full">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Position</label>
+                                <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <option>Top Left</option>
+                                    <option>Top Right</option>
+                                    <option>Bottom Left</option>
+                                    <option>Bottom Right</option>
+                                    <option>Center</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium mb-2">Size</label>
+                                <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <option>Small</option>
+                                    <option>Medium</option>
+                                    <option>Large</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ai" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">AI Training Tools</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Model Training</h3>
+                            <div class="space-y-4">
+                                <div class="bg-gray-700 p-4 rounded">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="font-medium">Gesture Recognition</span>
+                                        <span class="text-green-400">Training</span>
+                                    </div>
+                                    <div class="w-full bg-gray-600 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mt-1">65% Complete</p>
+                                </div>
+                                
+                                <div class="bg-gray-700 p-4 rounded">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="font-medium">Object Detection</span>
+                                        <span class="text-yellow-400">Queued</span>
+                                    </div>
+                                    <div class="w-full bg-gray-600 rounded-full h-2">
+                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 0%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mt-1">Waiting to start</p>
+                                </div>
+                                
+                                <div class="bg-gray-700 p-4 rounded">
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="font-medium">Voice Recognition</span>
+                                        <span class="text-green-400">Complete</span>
+                                    </div>
+                                    <div class="w-full bg-gray-600 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                    </div>
+                                    <p class="text-sm text-gray-400 mt-1">Ready for deployment</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Data Collection</h3>
+                            <div class="space-y-4">
+                                <div class="text-center p-6 bg-gray-700 rounded">
+                                    <div class="text-4xl mb-4">📊</div>
+                                    <h4 class="font-medium mb-2">Training Data</h4>
+                                    <p class="text-2xl font-bold text-blue-400">1,247</p>
+                                    <p class="text-sm text-gray-400">Samples collected</p>
+                                </div>
+                                
+                                <div class="grid grid-cols-2 gap-4">
+                                    <div class="text-center p-4 bg-gray-700 rounded">
+                                        <div class="text-2xl mb-2">👁️</div>
+                                        <p class="text-lg font-bold">892</p>
+                                        <p class="text-xs text-gray-400">Eye tracking</p>
+                                    </div>
+                                    <div class="text-center p-4 bg-gray-700 rounded">
+                                        <div class="text-2xl mb-2">✋</div>
+                                        <p class="text-lg font-bold">355</p>
+                                        <p class="text-xs text-gray-400">Hand gestures</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">AI Controls</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Start Training</button>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Deploy Model</button>
+                            <button class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Export Data</button>
+                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Reset Model</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="admin" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">Admin Settings</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">System Configuration</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Device Name</label>
+                                    <input type="text" value="AR-Glasses-001" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Auto-Connect</label>
+                                    <div class="flex items-center">
+                                        <input type="checkbox" checked class="mr-2">
+                                        <span>Enable automatic connection</span>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Power Management</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                        <option>Performance</option>
+                                        <option>Balanced</option>
+                                        <option>Power Saving</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Update Channel</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                        <option>Stable</option>
+                                        <option>Beta</option>
+                                        <option>Alpha</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Security Settings</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Access Control</label>
+                                    <div class="space-y-2">
+                                        <div class="flex items-center">
+                                            <input type="checkbox" checked class="mr-2">
+                                            <span>Require authentication</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="checkbox" class="mr-2">
+                                            <span>Two-factor authentication</span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <input type="checkbox" checked class="mr-2">
+                                            <span>Encrypt local data</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Session Timeout</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                        <option>15 minutes</option>
+                                        <option>30 minutes</option>
+                                        <option>1 hour</option>
+                                        <option>Never</option>
+                                    </select>
+                                </div>
+                                
+                                <div>
+                                    <label class="block text-sm font-medium mb-2">Data Retention</label>
+                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                        <option>7 days</option>
+                                        <option>30 days</option>
+                                        <option>90 days</option>
+                                        <option>1 year</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">System Actions</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Backup Settings</button>
+                            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Restore Defaults</button>
+                            <button class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Check Updates</button>
+                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Factory Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="monitor" class="content-section">
+                <div class="p-8">
+                    <h2 class="text-3xl font-bold mb-6">System Monitor</h2>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Real-time Metrics</h3>
+                            <div class="space-y-6">
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">CPU Usage</span>
+                                        <span class="text-sm text-blue-400">45%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">Memory Usage</span>
+                                        <span class="text-sm text-green-400">2.1GB / 8GB</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 26%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">GPU Usage</span>
+                                        <span class="text-sm text-purple-400">32%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 32%"></div>
+                                    </div>
+                                </div>
+                                
+                                <div>
+                                    <div class="flex justify-between items-center mb-2">
+                                        <span class="text-sm font-medium">Network</span>
+                                        <span class="text-sm text-yellow-400">12.5 MB/s</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 18%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gray-800 p-6 rounded-lg">
+                            <h3 class="text-xl font-semibold mb-4">Temperature Monitor</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded">
+                                    <span>CPU Temperature</span>
+                                    <span class="text-green-400">42°C</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded">
+                                    <span>GPU Temperature</span>
+                                    <span class="text-yellow-400">58°C</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded">
+                                    <span>Battery Temperature</span>
+                                    <span class="text-green-400">35°C</span>
+                                </div>
+                                <div class="flex justify-between items-center p-3 bg-gray-700 rounded">
+                                    <span>Ambient Temperature</span>
+                                    <span class="text-blue-400">22°C</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-8 bg-gray-800 p-6 rounded-lg">
+                        <h3 class="text-xl font-semibold mb-4">System Logs</h3>
+                        <div class="bg-gray-900 p-4 rounded h-48 overflow-y-auto font-mono text-sm">
+                            <div class="text-green-400">[2024-01-15 14:30:15] INFO: System startup complete</div>
+                            <div class="text-blue-400">[2024-01-15 14:30:20] INFO: AR glasses connected</div>
+                            <div class="text-yellow-400">[2024-01-15 14:31:05] WARN: High GPU temperature detected</div>
+                            <div class="text-green-400">[2024-01-15 14:32:10] INFO: Camera calibration successful</div>
+                            <div class="text-blue-400">[2024-01-15 14:33:25] INFO: AI model training started</div>
+                            <div class="text-green-400">[2024-01-15 14:35:40] INFO: Gesture recognition active</div>
+                            <div class="text-blue-400">[2024-01-15 14:36:15] INFO: Overlay system initialized</div>
+                            <div class="text-green-400">[2024-01-15 14:37:00] INFO: All systems operational</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/app.js"></script>
+</body>
+</html> 
