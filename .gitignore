@@ -160,7 +160,7 @@ Thumbs.db
 *~
 
 # TailwindCSS output
-src/styles/output.css
+output.css
 
 # Local development
 .local 
