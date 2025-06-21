@@ -32,11 +32,19 @@ export class DataCollector {
         try {
             console.log('📊 Initializing Data Collector...');
             
-            // Initialize sensor access
-            await this.initializeSensors();
+            // Initialize sensor access (don't fail if sensors are not available)
+            try {
+                await this.initializeSensors();
+            } catch (sensorError) {
+                console.warn('⚠️ Sensor initialization failed, continuing with mock data:', sensorError.message);
+            }
             
             // Initialize data processors
-            await this.initializeProcessors();
+            try {
+                await this.initializeProcessors();
+            } catch (processorError) {
+                console.warn('⚠️ Processor initialization failed:', processorError.message);
+            }
             
             // Set up data quality monitoring
             this.setupQualityMonitoring();
@@ -45,7 +53,7 @@ export class DataCollector {
             
         } catch (error) {
             console.error('❌ Failed to initialize Data Collector:', error);
-            throw error;
+            // Don't throw error - allow initialization to continue
         }
     }
 
@@ -54,33 +62,43 @@ export class DataCollector {
      */
     async initializeSensors() {
         try {
-            // Initialize camera access
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                this.dataStreams.camera = await navigator.mediaDevices.getUserMedia({
-                    video: {
-                        width: { ideal: 1920 },
-                        height: { ideal: 1080 },
-                        frameRate: { ideal: 30 }
-                    }
-                });
+            // Initialize camera access (optional - don't fail if not available)
+            try {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    this.dataStreams.camera = await navigator.mediaDevices.getUserMedia({
+                        video: {
+                            width: { ideal: 1920 },
+                            height: { ideal: 1080 },
+                            frameRate: { ideal: 30 }
+                        }
+                    });
+                    console.log('✅ Camera access initialized');
+                }
+            } catch (cameraError) {
+                console.warn('⚠️ Camera access not available:', cameraError.message);
             }
 
             // Initialize IMU sensors (if available)
             if ('DeviceMotionEvent' in window) {
                 this.setupIMUListeners();
+                console.log('✅ IMU sensors initialized');
+            } else {
+                console.warn('⚠️ IMU sensors not available');
             }
 
             // Initialize eye tracking (mock for now)
             this.setupEyeTrackingMock();
+            console.log('✅ Eye tracking mock initialized');
 
             // Initialize hand tracking (mock for now)
             this.setupHandTrackingMock();
+            console.log('✅ Hand tracking mock initialized');
 
             console.log('✅ Sensors initialized');
             
         } catch (error) {
             console.warn('⚠️ Some sensors not available:', error);
-            // Continue with available sensors
+            // Don't throw error - continue with available sensors
         }
     }
 
@@ -704,6 +722,29 @@ export class DataCollector {
         }
         
         console.log('🧹 Data Collector cleanup completed');
+    }
+
+    /**
+     * Export collected data
+     */
+    async exportData() {
+        const totalSamples = this.getTotalSamples();
+        const duration = this.getCollectionDuration();
+        
+        const exportData = {
+            samples: totalSamples,
+            duration: duration,
+            timestamp: Date.now(),
+            data: {
+                camera: this.collectedData.camera.length,
+                imu: this.collectedData.imu.length,
+                eyeTracking: this.collectedData.eyeTracking.length,
+                handTracking: this.collectedData.handTracking.length
+            }
+        };
+        
+        console.log('📤 Exporting data:', exportData);
+        return exportData;
     }
 }
 

@@ -82,11 +82,19 @@ export class AITrainingStudio {
             // Start model training
             await this.modules.modelTraining.startTraining(this.currentSession);
             
-            // Start progress tracking
+            // Start progress tracking for all models
             this.modules.progress.startTracking(this.currentSession.id);
+            this.modules.progress.startModelTracking('gesture');
+            this.modules.progress.startModelTracking('objectDetection');
+            this.modules.progress.startModelTracking('voiceRecognition');
             
             this.currentSession.status = 'training';
             this.updateTrainingStatus('training');
+            
+            // Trigger initial UI update
+            if (this.modules.progress.onProgressUpdate) {
+                this.modules.progress.onProgressUpdate({ percentage: 0, status: 'training' });
+            }
             
         } catch (error) {
             console.error('❌ Failed to start training session:', error);
@@ -114,6 +122,7 @@ export class AITrainingStudio {
             
             // Stop progress tracking
             this.modules.progress.stopTracking();
+            this.modules.progress.resetProgress();
             
             // Finalize session
             this.currentSession.status = 'completed';
@@ -124,6 +133,15 @@ export class AITrainingStudio {
             
             this.isTraining = false;
             this.updateTrainingStatus('completed');
+            
+            // Trigger final UI update
+            if (this.modules.progress.onProgressUpdate) {
+                this.modules.progress.onProgressUpdate({ 
+                    percentage: 0, 
+                    status: 'completed',
+                    message: 'Training session completed'
+                });
+            }
             
             console.log('✅ Training session completed');
             

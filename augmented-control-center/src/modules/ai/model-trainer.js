@@ -773,6 +773,33 @@ export class ModelTrainer {
     }
 
     /**
+     * Reset all models
+     */
+    async resetModels() {
+        try {
+            console.log('🔄 Resetting all models...');
+            
+            // Stop any ongoing training
+            await this.stopTraining();
+            
+            // Clear all models
+            this.models.clear();
+            
+            // Clear stored model states
+            localStorage.removeItem('ai_model_states');
+            
+            // Reinitialize default models
+            await this.initializeDefaultModels();
+            
+            console.log('✅ All models reset successfully');
+            
+        } catch (error) {
+            console.error('❌ Failed to reset models:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Cleanup resources
      */
     async cleanup() {

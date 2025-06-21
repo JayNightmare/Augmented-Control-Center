@@ -1,8 +1,11 @@
 // AR Glasses Control Center - Main Application Script
 
+import { AITrainingStudio } from '../modules/ai/ai-training-studio.js';
+
 class ARControlCenter {
     constructor() {
         this.currentSection = 'dashboard';
+        this.aiTrainingStudio = null;
         this.init();
     }
 
@@ -11,6 +14,7 @@ class ARControlCenter {
         this.setupEventListeners();
         this.initializeDashboard();
         this.startSystemMonitoring();
+        this.initializeAITrainingStudio();
     }
 
     setupNavigation() {
@@ -83,18 +87,33 @@ class ARControlCenter {
     }
 
     setupButtonListeners() {
-        // Camera calibration buttons
-        const calibrateButtons = document.querySelectorAll('button');
+        // AI Training Studio buttons
+        const startTrainingBtn = document.getElementById('start-training-btn');
+        const deployModelBtn = document.getElementById('deploy-model-btn');
+        const exportDataBtn = document.getElementById('export-data-btn');
+        const resetModelBtn = document.getElementById('reset-model-btn');
+
+        if (startTrainingBtn) {
+            startTrainingBtn.addEventListener('click', () => this.handleStartTraining());
+        }
+        if (deployModelBtn) {
+            deployModelBtn.addEventListener('click', () => this.handleDeployModel());
+        }
+        if (exportDataBtn) {
+            exportDataBtn.addEventListener('click', () => this.handleExportData());
+        }
+        if (resetModelBtn) {
+            resetModelBtn.addEventListener('click', () => this.handleResetModel());
+        }
+
+        // Other buttons
+        const calibrateButtons = document.querySelectorAll('button:not([id])');
         calibrateButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const buttonText = e.target.textContent.toLowerCase();
                 
                 if (buttonText.includes('calibrate')) {
                     this.handleCalibration(buttonText);
-                } else if (buttonText.includes('training')) {
-                    this.handleAITraining(buttonText);
-                } else if (buttonText.includes('deploy')) {
-                    this.handleModelDeployment();
                 } else if (buttonText.includes('backup')) {
                     this.handleBackup();
                 } else if (buttonText.includes('reset')) {
@@ -252,26 +271,259 @@ class ARControlCenter {
     // AI Tools functionality
     initializeAITools() {
         console.log('Initializing AI training tools...');
-        // Simulate training progress updates
-        setInterval(() => {
-            this.updateTrainingProgress();
-        }, 3000);
+        
+        if (this.aiTrainingStudio) {
+            // AI Training Studio is already initialized, just update the UI
+            this.logToConsole('AI Training Studio ready', 'success');
+            this.updateTrainingProgressBars();
+        } else {
+            this.logToConsole('AI Training Studio not available', 'error');
+        }
     }
 
     updateTrainingProgress() {
-        const progressBars = document.querySelectorAll('.bg-blue-600.h-2.rounded-full');
-        progressBars.forEach(bar => {
-            const currentWidth = parseFloat(bar.style.width) || 0;
-            if (currentWidth < 100) {
-                const newWidth = Math.min(currentWidth + Math.random() * 5, 100);
-                bar.style.width = `${newWidth}%`;
-                
-                const percentageText = bar.parentElement.nextElementSibling;
-                if (percentageText) {
-                    percentageText.textContent = `${Math.round(newWidth)}% Complete`;
-                }
+        // Update progress bars based on AI Training Studio status
+        if (this.aiTrainingStudio && this.aiTrainingStudio.isTraining) {
+            this.updateTrainingProgressBars();
+        }
+    }
+
+    updateTrainingProgressBars() {
+        if (!this.aiTrainingStudio) return;
+
+        // Update gesture recognition progress
+        this.updateModelProgress('gesture', 0);
+        
+        // Update object detection progress
+        this.updateModelProgress('objectDetection', 1);
+        
+        // Update voice recognition progress
+        this.updateModelProgress('voiceRecognition', 2);
+    }
+
+    updateModelProgress(modelType, index) {
+        const modelContainers = document.querySelectorAll('.bg-gray-700.p-4.rounded');
+        if (!modelContainers[index]) return;
+
+        const container = modelContainers[index];
+        const progressBar = container.querySelector('.bg-blue-600, .bg-yellow-600, .bg-green-600');
+        const statusElement = container.querySelector('.text-green-400, .text-yellow-400, .text-blue-400');
+        const progressText = container.querySelector('.text-sm.text-gray-400');
+
+        if (!progressBar || !statusElement || !progressText) return;
+
+        const progress = this.aiTrainingStudio.modules.progress.getProgress(modelType) || 0;
+        
+        // Update progress bar
+        progressBar.style.width = `${progress}%`;
+        
+        // Update progress text
+        progressText.textContent = `${Math.round(progress)}% Complete`;
+        
+        // Update status and colors
+        if (progress >= 100) {
+            statusElement.textContent = 'Complete';
+            statusElement.className = 'text-green-400';
+            progressBar.className = 'bg-green-600 h-2 rounded-full';
+        } else if (progress > 0) {
+            statusElement.textContent = 'Training';
+            statusElement.className = 'text-blue-400';
+            progressBar.className = 'bg-blue-600 h-2 rounded-full';
+        } else {
+            statusElement.textContent = 'Queued';
+            statusElement.className = 'text-yellow-400';
+            progressBar.className = 'bg-yellow-600 h-2 rounded-full';
+        }
+    }
+
+    // Start periodic progress updates when training is active
+    startProgressUpdates() {
+        if (this.progressInterval) {
+            clearInterval(this.progressInterval);
+        }
+        
+        this.progressInterval = setInterval(() => {
+            if (this.aiTrainingStudio && this.aiTrainingStudio.isTraining) {
+                this.updateTrainingProgressBars();
             }
-        });
+        }, 500); // Update every 500ms
+    }
+
+    stopProgressUpdates() {
+        if (this.progressInterval) {
+            clearInterval(this.progressInterval);
+            this.progressInterval = null;
+        }
+    }
+
+    // AI Training Studio handlers
+    async handleStartTraining() {
+        console.log('handleStartTraining called');
+        console.log('aiTrainingStudio:', this.aiTrainingStudio);
+        console.log('aiTrainingStudio.isTraining:', this.aiTrainingStudio?.isTraining);
+        
+        if (!this.aiTrainingStudio) {
+            this.logToConsole('AI Training Studio not initialized', 'error');
+            return;
+        }
+
+        try {
+            this.logToConsole('Starting AI training session...', 'info');
+            this.updateButtonState('start-training-btn', true);
+            
+            await this.aiTrainingStudio.startTrainingSession();
+            
+            this.logToConsole('Training session started successfully', 'success');
+            this.updateTrainingProgressBars();
+            
+            // Start periodic progress updates
+            this.startProgressUpdates();
+            
+        } catch (error) {
+            console.error('Error in handleStartTraining:', error);
+            this.logToConsole(`Failed to start training: ${error.message}`, 'error');
+        } finally {
+            this.updateButtonState('start-training-btn', false);
+        }
+    }
+
+    async handleDeployModel() {
+        if (!this.aiTrainingStudio) {
+            this.logToConsole('AI Training Studio not initialized', 'error');
+            return;
+        }
+
+        try {
+            this.logToConsole('Deploying trained model...', 'info');
+            this.updateButtonState('deploy-model-btn', true);
+            
+            await this.aiTrainingStudio.modules.deployment.deployModel();
+            
+            this.logToConsole('Model deployed successfully', 'success');
+            
+        } catch (error) {
+            this.logToConsole(`Failed to deploy model: ${error.message}`, 'error');
+        } finally {
+            this.updateButtonState('deploy-model-btn', false);
+        }
+    }
+
+    async handleExportData() {
+        if (!this.aiTrainingStudio) {
+            this.logToConsole('AI Training Studio not initialized', 'error');
+            return;
+        }
+
+        try {
+            this.logToConsole('Exporting training data...', 'info');
+            this.updateButtonState('export-data-btn', true);
+            
+            const data = await this.aiTrainingStudio.modules.dataCollection.exportData();
+            
+            this.logToConsole(`Exported ${data.samples} training samples`, 'success');
+            
+        } catch (error) {
+            this.logToConsole(`Failed to export data: ${error.message}`, 'error');
+        } finally {
+            this.updateButtonState('export-data-btn', false);
+        }
+    }
+
+    async handleResetModel() {
+        if (!this.aiTrainingStudio) {
+            this.logToConsole('AI Training Studio not initialized', 'error');
+            return;
+        }
+
+        try {
+            this.logToConsole('Resetting AI models...', 'warning');
+            this.updateButtonState('reset-model-btn', true);
+            
+            // Stop progress updates
+            this.stopProgressUpdates();
+            
+            await this.aiTrainingStudio.modules.modelTraining.resetModels();
+            
+            this.logToConsole('Models reset successfully', 'success');
+            this.updateTrainingProgressBars();
+            
+        } catch (error) {
+            this.logToConsole(`Failed to reset models: ${error.message}`, 'error');
+        } finally {
+            this.updateButtonState('reset-model-btn', false);
+        }
+    }
+
+    // Console output functionality
+    logToConsole(message, type = 'info') {
+        const consoleOutput = document.getElementById('ai-console-output');
+        if (!consoleOutput) return;
+
+        const timestamp = new Date().toLocaleTimeString();
+        const logEntry = document.createElement('div');
+        
+        let colorClass = 'text-gray-400';
+        let prefix = 'ℹ️';
+        
+        switch (type) {
+            case 'error':
+                colorClass = 'text-red-400';
+                prefix = '❌';
+                break;
+            case 'success':
+                colorClass = 'text-green-400';
+                prefix = '✅';
+                break;
+            case 'warning':
+                colorClass = 'text-yellow-400';
+                prefix = '⚠️';
+                break;
+            case 'info':
+            default:
+                colorClass = 'text-blue-400';
+                prefix = 'ℹ️';
+                break;
+        }
+        
+        logEntry.className = colorClass;
+        logEntry.innerHTML = `<span class="text-gray-500">[${timestamp}]</span> ${prefix} ${message}`;
+        
+        consoleOutput.appendChild(logEntry);
+        consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        
+        // Keep only last 50 entries
+        while (consoleOutput.children.length > 50) {
+            consoleOutput.removeChild(consoleOutput.firstChild);
+        }
+    }
+
+    updateButtonState(buttonId, isLoading) {
+        const button = document.getElementById(buttonId);
+        if (!button) return;
+
+        if (isLoading) {
+            button.disabled = true;
+            button.textContent = 'Processing...';
+            button.className = button.className.replace('hover:', '') + ' opacity-50';
+        } else {
+            button.disabled = false;
+            // Restore original text based on button ID
+            switch (buttonId) {
+                case 'start-training-btn':
+                    button.textContent = 'Start Training';
+                    break;
+                case 'deploy-model-btn':
+                    button.textContent = 'Deploy Model';
+                    break;
+                case 'export-data-btn':
+                    button.textContent = 'Export Data';
+                    break;
+                case 'reset-model-btn':
+                    button.textContent = 'Reset Model';
+                    break;
+            }
+            button.className = button.className.replace(' opacity-50', '');
+        }
     }
 
     // Admin Settings functionality
@@ -367,42 +619,17 @@ class ARControlCenter {
     // Event handlers
     handleCalibration(type) {
         console.log(`Starting ${type} calibration...`);
-        // Show calibration progress
-        this.showNotification(`Starting ${type} calibration...`, 'info');
-        
-        setTimeout(() => {
-            this.showNotification(`${type} calibration completed successfully!`, 'success');
-        }, 3000);
-    }
-
-    handleAITraining(type) {
-        console.log(`Starting ${type} training...`);
-        this.showNotification(`AI ${type} training initiated`, 'info');
-    }
-
-    handleModelDeployment() {
-        console.log('Deploying AI model...');
-        this.showNotification('AI model deployment started', 'info');
-        
-        setTimeout(() => {
-            this.showNotification('AI model deployed successfully!', 'success');
-        }, 5000);
+        this.showNotification(`Camera ${type} calibration initiated`, 'info');
     }
 
     handleBackup() {
-        console.log('Creating system backup...');
-        this.showNotification('System backup in progress...', 'info');
-        
-        setTimeout(() => {
-            this.showNotification('System backup completed successfully!', 'success');
-        }, 4000);
+        console.log('Starting system backup...');
+        this.showNotification('System backup initiated', 'info');
     }
 
     handleReset() {
         console.log('Resetting system...');
-        if (confirm('Are you sure you want to reset the system? This action cannot be undone.')) {
-            this.showNotification('System reset initiated...', 'warning');
-        }
+        this.showNotification('System reset initiated', 'warning');
     }
 
     showNotification(message, type = 'info') {
@@ -415,6 +642,44 @@ class ARControlCenter {
         setTimeout(() => {
             notification.remove();
         }, 5000);
+    }
+
+    initializeAITrainingStudio() {
+        console.log('initializeAITrainingStudio called');
+        try {
+            console.log('Creating AI Training Studio instance...');
+            this.aiTrainingStudio = new AITrainingStudio();
+            console.log('AI Training Studio instance created:', this.aiTrainingStudio);
+            
+            // Set up progress update listeners
+            if (this.aiTrainingStudio.modules.progress) {
+                console.log('Setting up progress update listeners...');
+                this.aiTrainingStudio.modules.progress.onProgressUpdate = (progress) => {
+                    console.log('Progress update received:', progress);
+                    this.updateTrainingProgressBars();
+                    if (progress.modelType) {
+                        this.logToConsole(`${progress.modelType} training: ${Math.round(progress.modelProgress)}%`, 'info');
+                    } else {
+                        this.logToConsole(`Overall training progress: ${Math.round(progress.percentage)}%`, 'info');
+                    }
+                };
+            }
+            
+            // Initialize the AI Training Studio immediately
+            console.log('Initializing AI Training Studio...');
+            this.aiTrainingStudio.initialize().then(() => {
+                console.log('AI Training Studio initialized successfully');
+                this.logToConsole('AI Training Studio initialized successfully', 'success');
+                this.updateTrainingProgressBars();
+            }).catch(error => {
+                console.error('AI Training Studio initialization error:', error);
+                this.logToConsole(`Error initializing AI Training Studio: ${error.message}`, 'error');
+            });
+            
+        } catch (error) {
+            console.error('Error creating AI Training Studio:', error);
+            this.logToConsole(`Error creating AI Training Studio: ${error.message}`, 'error');
+        }
     }
 }
 

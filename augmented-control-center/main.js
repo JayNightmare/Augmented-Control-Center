@@ -16,6 +16,7 @@ function createWindow() {
         webPreferences: {
             nodeIntegration: true,
             contextIsolation: false,
+            webSecurity: false, // Allow ES modules in development
         },
         icon: path.join(__dirname, "assets", "icon.png"), // Optional: add an icon
         show: false, // Don't show until ready

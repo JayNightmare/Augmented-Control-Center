@@ -457,10 +457,18 @@
                     <div class="mt-8 bg-gray-800 p-6 rounded-lg">
                         <h3 class="text-xl font-semibold mb-4">AI Controls</h3>
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <button class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Start Training</button>
-                            <button class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Deploy Model</button>
-                            <button class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Export Data</button>
-                            <button class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Reset Model</button>
+                            <button id="start-training-btn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Start Training</button>
+                            <button id="deploy-model-btn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Deploy Model</button>
+                            <button id="export-data-btn" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Export Data</button>
+                            <button id="reset-model-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Reset Model</button>
+                        </div>
+                        
+                        <!-- Console Output Section -->
+                        <div class="mt-6">
+                            <h4 class="text-lg font-medium mb-3">Training Console</h4>
+                            <div id="ai-console-output" class="bg-gray-900 p-4 rounded-lg h-48 overflow-y-auto font-mono text-sm">
+                                <div class="text-gray-400">AI Training Console - Ready for commands...</div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -652,6 +660,6 @@
         </div>
     </div>
 
-    <script src="./js/app.js"></script>
+    <script type="module" src="./js/app.js"></script>
 </body>
 </html> 

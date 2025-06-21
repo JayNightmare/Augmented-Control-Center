@@ -68,6 +68,41 @@ export class DeploymentManager {
     }
 
     /**
+     * Deploy a generic model (for backward compatibility)
+     */
+    async deployModel(modelName = 'default') {
+        try {
+            console.log(`🚀 Deploying model: ${modelName}`);
+            
+            // Mock deployment logic
+            const deployedModel = {
+                name: modelName,
+                type: 'generic',
+                accuracy: 0.9,
+                deployedAt: Date.now(),
+                modelId: `${modelName}_${Date.now()}`
+            };
+            
+            this.deployedModels.push(deployedModel);
+            
+            if (this.onDeploymentComplete) {
+                this.onDeploymentComplete({ 
+                    success: true, 
+                    message: `${modelName} model deployed`, 
+                    modelId: deployedModel.modelId 
+                });
+            }
+            
+            console.log(`✅ ${modelName} model deployed successfully`);
+            return deployedModel;
+            
+        } catch (error) {
+            console.error(`❌ Failed to deploy ${modelName} model:`, error);
+            throw error;
+        }
+    }
+
+    /**
      * Get deployed models
      */
     async getDeployedModels() {

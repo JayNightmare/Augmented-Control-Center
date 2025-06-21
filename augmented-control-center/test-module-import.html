@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Module Import Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #1a1a1a;
+            color: #ffffff;
+        }
+        .test-section {
+            background-color: #2a2a2a;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+        }
+        .console {
+            background-color: #000;
+            color: #00ff00;
+            padding: 10px;
+            border-radius: 4px;
+            font-family: monospace;
+            height: 200px;
+            overflow-y: auto;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Module Import Test</h1>
+    
+    <div class="test-section">
+        <h2>Module Import Status</h2>
+        <div id="import-status">Testing...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Console Output</h2>
+        <div class="console" id="console-output">Starting module import test...</div>
+    </div>
+
+    <script type="module">
+        function logToConsole(message, type = 'info') {
+            const consoleOutput = document.getElementById('console-output');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            let color = '#00ff00';
+            let prefix = 'ℹ️';
+            
+            switch (type) {
+                case 'error':
+                    color = '#ff0000';
+                    prefix = '❌';
+                    break;
+                case 'success':
+                    color = '#00ff00';
+                    prefix = '✅';
+                    break;
+                case 'warning':
+                    color = '#ffff00';
+                    prefix = '⚠️';
+                    break;
+            }
+            
+            const logEntry = document.createElement('div');
+            logEntry.style.color = color;
+            logEntry.innerHTML = `[${timestamp}] ${prefix} ${message}`;
+            
+            consoleOutput.appendChild(logEntry);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+        
+        const statusDiv = document.getElementById('import-status');
+        
+        async function testModuleImports() {
+            try {
+                logToConsole('Testing module imports...', 'info');
+                
+                // Test individual module imports
+                logToConsole('Importing DataCollector...', 'info');
+                const { DataCollector } = await import('./src/modules/ai/data-collector.js');
+                logToConsole('DataCollector imported successfully', 'success');
+                
+                logToConsole('Importing ModelTrainer...', 'info');
+                const { ModelTrainer } = await import('./src/modules/ai/model-trainer.js');
+                logToConsole('ModelTrainer imported successfully', 'success');
+                
+                logToConsole('Importing ValidationEngine...', 'info');
+                const { ValidationEngine } = await import('./src/modules/ai/validation-engine.js');
+                logToConsole('ValidationEngine imported successfully', 'success');
+                
+                logToConsole('Importing DeploymentManager...', 'info');
+                const { DeploymentManager } = await import('./src/modules/ai/deployment-manager.js');
+                logToConsole('DeploymentManager imported successfully', 'success');
+                
+                logToConsole('Importing TrainingProgressTracker...', 'info');
+                const { TrainingProgressTracker } = await import('./src/modules/ai/training-progress-tracker.js');
+                logToConsole('TrainingProgressTracker imported successfully', 'success');
+                
+                // Test AI Training Studio import
+                logToConsole('Importing AITrainingStudio...', 'info');
+                const { AITrainingStudio } = await import('./src/modules/ai/ai-training-studio.js');
+                logToConsole('AITrainingStudio imported successfully', 'success');
+                
+                // Test creating an instance
+                logToConsole('Creating AITrainingStudio instance...', 'info');
+                const aiStudio = new AITrainingStudio();
+                logToConsole('AITrainingStudio instance created successfully', 'success');
+                
+                // Test initialization
+                logToConsole('Initializing AITrainingStudio...', 'info');
+                await aiStudio.initialize();
+                logToConsole('AITrainingStudio initialized successfully', 'success');
+                
+                statusDiv.textContent = '✅ All module imports successful!';
+                statusDiv.style.color = '#00ff00';
+                
+            } catch (error) {
+                logToConsole(`Module import failed: ${error.message}`, 'error');
+                logToConsole(`Error stack: ${error.stack}`, 'error');
+                statusDiv.textContent = '❌ Module import failed: ' + error.message;
+                statusDiv.style.color = '#ff0000';
+            }
+        }
+        
+        // Run the test
+        testModuleImports();
+    </script>
+</body>
+</html> 
