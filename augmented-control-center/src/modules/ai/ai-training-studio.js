@@ -11,6 +11,7 @@ import { TrainingProgressTracker } from './training-progress-tracker.js';
 
 export class AITrainingStudio {
     constructor() {
+        console.log('🧠 AI Training Studio initialized');
         this.modules = {
             dataCollection: new DataCollector(),
             modelTraining: new ModelTrainer(),

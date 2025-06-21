@@ -5,7 +5,7 @@ import { AITrainingStudio } from '../modules/ai/ai-training-studio.js';
 class ARControlCenter {
     constructor() {
         this.currentSection = 'dashboard';
-        this.aiTrainingStudio = null;
+        this.aiTrainingStudio = new AITrainingStudio();
         this.init();
     }
 
@@ -269,17 +269,17 @@ class ARControlCenter {
     }
 
     // AI Tools functionality
-    initializeAITools() {
-        console.log('Initializing AI training tools...');
+    // initializeAITools() {
+    //     console.log('Initializing AI training tools...');
         
-        if (this.aiTrainingStudio) {
-            // AI Training Studio is already initialized, just update the UI
-            this.logToConsole('AI Training Studio ready', 'success');
-            this.updateTrainingProgressBars();
-        } else {
-            this.logToConsole('AI Training Studio not available', 'error');
-        }
-    }
+    //     if (this.aiTrainingStudio) {
+    //         // AI Training Studio is already initialized, just update the UI
+    //         this.logToConsole('AI Training Studio ready', 'success');
+    //         this.updateTrainingProgressBars();
+    //     } else {
+    //         this.logToConsole('AI Training Studio not available', 'error');
+    //     }
+    // }
 
     updateTrainingProgress() {
         // Update progress bars based on AI Training Studio status
@@ -363,7 +363,7 @@ class ARControlCenter {
         console.log('aiTrainingStudio.isTraining:', this.aiTrainingStudio?.isTraining);
         
         if (!this.aiTrainingStudio) {
-            this.logToConsole('AI Training Studio not initialized', 'error');
+            this.logToConsole(`AI Training Studio not initialized, ${aiTrainingStudio}`, 'error');
             return;
         }
 
