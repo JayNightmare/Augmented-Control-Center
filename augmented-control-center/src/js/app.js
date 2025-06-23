@@ -1,7 +1,8 @@
 // AR Glasses Control Center - Main Application Script
 
-import { logToConsole } from './logToConsole.js';
-import { updateTrainingProgressBars } from './updateProgressBars.js';
+import { logToConsole } from './utils/logToConsole.js';
+import { updateTrainingProgressBars } from './utils/updateProgressBars.js';
+import { updateSystemMetrics, updateSystemLogs } from './utils/systemInfo.js';
 
 class ARControlCenter {
     constructor() {
@@ -369,67 +370,13 @@ class ARControlCenter {
     startSystemMonitoring() {
         // Update system metrics every 2 seconds
         setInterval(() => {
-            this.updateSystemMetrics();
+            updateSystemMetrics();
         }, 2000);
 
         // Update system logs every 5 seconds
         setInterval(() => {
-            this.updateSystemLogs();
+            updateSystemLogs();
         }, 5000);
-    }
-
-    updateSystemMetrics() {
-        // Simulate real-time system metrics
-        const metrics = {
-            cpu: Math.floor(Math.random() * 50) + 20,
-            memory: Math.floor(Math.random() * 30) + 20,
-            gpu: Math.floor(Math.random() * 40) + 20,
-            network: Math.floor(Math.random() * 20) + 5
-        };
-
-        // Update progress bars
-        const progressBars = document.querySelectorAll('.progress-fill');
-        progressBars.forEach((bar, index) => {
-            const values = [metrics.cpu, metrics.memory, metrics.gpu, metrics.network];
-            if (values[index]) {
-                bar.style.width = `${values[index]}%`;
-                const percentageElement = bar.parentElement.nextElementSibling;
-                if (percentageElement) {
-                    percentageElement.textContent = `${values[index]}%`;
-                }
-            }
-        });
-    }
-
-    updateSystemLogs() {
-        const logContainer = document.querySelector('.bg-gray-900.p-4.rounded.h-48');
-        if (logContainer) {
-            const timestamp = new Date().toLocaleTimeString();
-            const logLevels = ['INFO', 'WARN', 'ERROR'];
-            const logMessages = [
-                'System check completed',
-                'Memory usage normal',
-                'Network connection stable',
-                'Temperature within limits',
-                'Background processes running'
-            ];
-            
-            const randomLevel = logLevels[Math.floor(Math.random() * logLevels.length)];
-            const randomMessage = logMessages[Math.floor(Math.random() * logMessages.length)];
-            const colorClass = randomLevel === 'INFO' ? 'text-green-400' : 
-                             randomLevel === 'WARN' ? 'text-yellow-400' : 'text-red-400';
-            
-            const logEntry = document.createElement('div');
-            logEntry.className = colorClass;
-            logEntry.textContent = `[${timestamp}] ${randomLevel}: ${randomMessage}`;
-            
-            logContainer.appendChild(logEntry);
-            
-            // Keep only last 10 log entries
-            while (logContainer.children.length > 10) {
-                logContainer.removeChild(logContainer.firstChild);
-            }
-        }
     }
 
     // Event handlers

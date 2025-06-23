@@ -598,40 +598,40 @@
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-medium">CPU Usage</span>
-                                        <span class="text-sm text-blue-400">45%</span>
+                                        <span class="text-sm text-blue-400">0%</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
-                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-medium">Memory Usage</span>
-                                        <span class="text-sm text-green-400">2.1GB / 8GB</span>
+                                        <span class="text-sm text-green-400">Undefined</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
-                                        <div class="bg-green-600 h-2 rounded-full" style="width: 26%"></div>
+                                        <div class="bg-green-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-medium">GPU Usage</span>
-                                        <span class="text-sm text-purple-400">32%</span>
+                                        <span class="text-sm text-purple-400">0%</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
-                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 32%"></div>
+                                        <div class="bg-purple-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="text-sm font-medium">Network</span>
-                                        <span class="text-sm text-yellow-400">12.5 MB/s</span>
+                                        <span class="text-sm text-yellow-400">Undefined</span>
                                     </div>
                                     <div class="w-full bg-gray-700 rounded-full h-2">
-                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 18%"></div>
+                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
                                 </div>
                             </div>
@@ -662,15 +662,8 @@
                     
                     <div class="mt-8 bg-gray-800 p-6 rounded-lg">
                         <h3 class="text-xl font-semibold mb-4">System Logs</h3>
-                        <div class="bg-gray-900 p-4 rounded h-48 overflow-y-auto font-mono text-sm">
-                            <div class="text-green-400">[2024-01-15 14:30:15] INFO: System startup complete</div>
-                            <div class="text-blue-400">[2024-01-15 14:30:20] INFO: AR glasses connected</div>
-                            <div class="text-yellow-400">[2024-01-15 14:31:05] WARN: High GPU temperature detected</div>
-                            <div class="text-green-400">[2024-01-15 14:32:10] INFO: Camera calibration successful</div>
-                            <div class="text-blue-400">[2024-01-15 14:33:25] INFO: AI model training started</div>
-                            <div class="text-green-400">[2024-01-15 14:35:40] INFO: Gesture recognition active</div>
-                            <div class="text-blue-400">[2024-01-15 14:36:15] INFO: Overlay system initialized</div>
-                            <div class="text-green-400">[2024-01-15 14:37:00] INFO: All systems operational</div>
+                        <div id="system-log-container" class="bg-gray-900 p-4 rounded h-48 overflow-y-auto font-mono text-sm">
+                            <!-- Inject with JS from system metric logs -->
                         </div>
                     </div>
                 </div>
