@@ -361,11 +361,11 @@
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label class="block text-sm font-medium mb-2">Opacity</label>
-                                <input type="range" min="0" max="100" value="80" class="w-full">
+                                <input title="opacity" type="range" min="0" max="100" value="80" class="w-full">
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Position</label>
-                                <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                <select title="position" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                     <option>Top Left</option>
                                     <option>Top Right</option>
                                     <option>Bottom Left</option>
@@ -375,7 +375,7 @@
                             </div>
                             <div>
                                 <label class="block text-sm font-medium mb-2">Size</label>
-                                <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                <select title="size" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                     <option>Small</option>
                                     <option>Medium</option>
                                     <option>Large</option>
@@ -396,34 +396,46 @@
                                 <div class="bg-gray-700 p-4 rounded">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="font-medium">Gesture Recognition</span>
-                                        <span class="text-green-400">Training</span>
+                                        <span class="text-green-400" id="gesture-recognition-status">
+                                            <!-- Inject with Progress Indicator -->
+                                        </span>
                                     </div>
                                     <div class="w-full bg-gray-600 rounded-full h-2">
-                                        <div class="bg-blue-600 h-2 rounded-full" style="width: 65%"></div>
+                                        <div id="gesture-recognition-progress" class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
-                                    <p class="text-sm text-gray-400 mt-1">65% Complete</p>
+                                    <p class="text-sm text-gray-400 mt-1" id="gesture-recognition-progress-text">
+                                        <!-- Inject with Progress Indicator -->
+                                    </p>
                                 </div>
                                 
                                 <div class="bg-gray-700 p-4 rounded">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="font-medium">Object Detection</span>
-                                        <span class="text-yellow-400">Queued</span>
+                                        <span class="text-yellow-400" id="object-detection-status">
+                                            <!-- Inject with Progress Indicator -->
+                                        </span>
                                     </div>
                                     <div class="w-full bg-gray-600 rounded-full h-2">
-                                        <div class="bg-yellow-600 h-2 rounded-full" style="width: 0%"></div>
+                                        <div id="object-detection-progress" class="bg-yellow-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
-                                    <p class="text-sm text-gray-400 mt-1">Waiting to start</p>
+                                    <p class="text-sm text-gray-400 mt-1" id="object-detection-progress-text">
+                                        <!-- Inject with Progress Indicator -->
+                                    </p>
                                 </div>
                                 
                                 <div class="bg-gray-700 p-4 rounded">
                                     <div class="flex justify-between items-center mb-2">
                                         <span class="font-medium">Voice Recognition</span>
-                                        <span class="text-green-400">Complete</span>
+                                        <span class="text-green-400" id="voice-recognition-status">
+                                            <!-- Inject with Progress Indicator -->
+                                        </span>
                                     </div>
                                     <div class="w-full bg-gray-600 rounded-full h-2">
-                                        <div class="bg-green-600 h-2 rounded-full" style="width: 100%"></div>
+                                        <div id="voice-recognition-progress" class="bg-green-600 h-2 rounded-full" style="width: 0%"></div>
                                     </div>
-                                    <p class="text-sm text-gray-400 mt-1">Ready for deployment</p>
+                                    <p class="text-sm text-gray-400 mt-1" id="voice-recognition-progress-text">
+                                        <!-- Inject with Progress Indicator -->
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -434,20 +446,26 @@
                                 <div class="text-center p-6 bg-gray-700 rounded">
                                     <div class="text-4xl mb-4">📊</div>
                                     <h4 class="font-medium mb-2">Training Data</h4>
-                                    <p class="text-2xl font-bold text-blue-400">1,247</p>
-                                    <p class="text-sm text-gray-400">Samples collected</p>
+                                    <p class="text-2xl font-bold text-blue-400" id="training-data-count">
+                                        <!-- Inject with Training Data Count -->
+                                    </p>
+                                    <p class="text-sm text-gray-400">Samples Collected</p>
                                 </div>
                                 
                                 <div class="grid grid-cols-2 gap-4">
                                     <div class="text-center p-4 bg-gray-700 rounded">
                                         <div class="text-2xl mb-2">👁️</div>
-                                        <p class="text-lg font-bold">892</p>
-                                        <p class="text-xs text-gray-400">Eye tracking</p>
+                                        <p class="text-lg font-bold" id="eye-count">
+                                            <!-- Inject with Image Count -->
+                                        </p>
+                                        <p class="text-xs text-gray-400">Eye Tracking Training Data</p>
                                     </div>
                                     <div class="text-center p-4 bg-gray-700 rounded">
                                         <div class="text-2xl mb-2">✋</div>
-                                        <p class="text-lg font-bold">355</p>
-                                        <p class="text-xs text-gray-400">Hand gestures</p>
+                                        <p class="text-lg font-bold" id="gesture-count">
+                                            <!-- Inject with Gesture Count -->
+                                        </p>
+                                        <p class="text-xs text-gray-400">Hand Gestures Training Data</p>
                                     </div>
                                 </div>
                             </div>
@@ -459,7 +477,7 @@
                         <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
                             <button id="start-training-btn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded">Start Training</button>
                             <button id="deploy-model-btn" class="bg-green-600 hover:bg-green-700 px-4 py-2 rounded">Deploy Model</button>
-                            <button id="export-data-btn" class="bg-yellow-600 hover:bg-yellow-700 px-4 py-2 rounded">Export Data</button>
+                            <button id="export-data-btn" class="bg-yellow-500 hover:bg-yellow-600 px-4 py-2 rounded">Export Data</button>
                             <button id="reset-model-btn" class="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">Reset Model</button>
                         </div>
                         
@@ -483,20 +501,20 @@
                             <div class="space-y-4">
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Device Name</label>
-                                    <input type="text" value="AR-Glasses-001" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <input placeholder="Enter Name" type="text" value="AR-Glasses-001" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Auto-Connect</label>
                                     <div class="flex items-center">
-                                        <input type="checkbox" checked class="mr-2">
+                                        <input placeholder="checkbox" type="checkbox" checked class="mr-2">
                                         <span>Enable automatic connection</span>
                                     </div>
                                 </div>
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Power Management</label>
-                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <select title="Power Management" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                         <option>Performance</option>
                                         <option>Balanced</option>
                                         <option>Power Saving</option>
@@ -505,7 +523,7 @@
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Update Channel</label>
-                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <select title="Update Channel" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                         <option>Stable</option>
                                         <option>Beta</option>
                                         <option>Alpha</option>
@@ -521,15 +539,15 @@
                                     <label class="block text-sm font-medium mb-2">Access Control</label>
                                     <div class="space-y-2">
                                         <div class="flex items-center">
-                                            <input type="checkbox" checked class="mr-2">
+                                            <input title="auth" type="checkbox" checked class="mr-2">
                                             <span>Require authentication</span>
                                         </div>
                                         <div class="flex items-center">
-                                            <input type="checkbox" class="mr-2">
+                                            <input title="2fa" type="checkbox" class="mr-2">
                                             <span>Two-factor authentication</span>
                                         </div>
                                         <div class="flex items-center">
-                                            <input type="checkbox" checked class="mr-2">
+                                            <input title="local" type="checkbox" checked class="mr-2">
                                             <span>Encrypt local data</span>
                                         </div>
                                     </div>
@@ -537,7 +555,7 @@
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Session Timeout</label>
-                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <select title="session timeout" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                         <option>15 minutes</option>
                                         <option>30 minutes</option>
                                         <option>1 hour</option>
@@ -547,7 +565,7 @@
                                 
                                 <div>
                                     <label class="block text-sm font-medium mb-2">Data Retention</label>
-                                    <select class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
+                                    <select title="retention" class="w-full bg-gray-700 border border-gray-600 rounded px-3 py-2">
                                         <option>7 days</option>
                                         <option>30 days</option>
                                         <option>90 days</option>

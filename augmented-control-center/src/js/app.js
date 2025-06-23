@@ -1,11 +1,8 @@
 // AR Glasses Control Center - Main Application Script
 
-import { AITrainingStudio } from '../modules/ai/ai-training-studio.js';
-
 class ARControlCenter {
     constructor() {
         this.currentSection = 'dashboard';
-        this.aiTrainingStudio = new AITrainingStudio();
         this.init();
     }
 
@@ -14,7 +11,6 @@ class ARControlCenter {
         this.setupEventListeners();
         this.initializeDashboard();
         this.startSystemMonitoring();
-        this.initializeAITrainingStudio();
     }
 
     setupNavigation() {
@@ -111,14 +107,8 @@ class ARControlCenter {
         calibrateButtons.forEach(button => {
             button.addEventListener('click', (e) => {
                 const buttonText = e.target.textContent.toLowerCase();
-                
-                if (buttonText.includes('calibrate')) {
-                    this.handleCalibration(buttonText);
-                } else if (buttonText.includes('backup')) {
-                    this.handleBackup();
-                } else if (buttonText.includes('reset')) {
-                    this.handleReset();
-                }
+
+                // When a button is clicked, 
             });
         });
     }
@@ -136,7 +126,7 @@ class ARControlCenter {
         const metrics = {
             battery: Math.floor(Math.random() * 30) + 70, // 70-100%
             cpu: Math.floor(Math.random() * 40) + 30, // 30-70%
-            memory: (Math.random() * 2 + 1).toFixed(1), // 1-3GB
+            memory: (Math.random() * 2 + 1), // 1-3GB
             temperature: Math.floor(Math.random() * 10) + 38 // 38-48°C
         };
 
@@ -268,225 +258,174 @@ class ARControlCenter {
         });
     }
 
-    // AI Tools functionality
-    // initializeAITools() {
-    //     console.log('Initializing AI training tools...');
-        
-    //     if (this.aiTrainingStudio) {
-    //         // AI Training Studio is already initialized, just update the UI
-    //         this.logToConsole('AI Training Studio ready', 'success');
-    //         this.updateTrainingProgressBars();
-    //     } else {
-    //         this.logToConsole('AI Training Studio not available', 'error');
-    //     }
-    // }
+    // //
 
-    updateTrainingProgress() {
-        // Update progress bars based on AI Training Studio status
-        if (this.aiTrainingStudio && this.aiTrainingStudio.isTraining) {
-            this.updateTrainingProgressBars();
-        }
-    }
+    updateTrainingProgressBars(progress = {}, status = {}) {
+        const models = [
+            { id: 'gesture-recognition' },
+            { id: 'object-detection' },
+            { id: 'voice-recognition' }
+        ];
 
-    updateTrainingProgressBars() {
-        if (!this.aiTrainingStudio) return;
-
-        // Update gesture recognition progress
-        this.updateModelProgress('gesture', 0);
-        
-        // Update object detection progress
-        this.updateModelProgress('objectDetection', 1);
-        
-        // Update voice recognition progress
-        this.updateModelProgress('voiceRecognition', 2);
-    }
-
-    updateModelProgress(modelType, index) {
-        const modelContainers = document.querySelectorAll('.bg-gray-700.p-4.rounded');
-        if (!modelContainers[index]) return;
-
-        const container = modelContainers[index];
-        const progressBar = container.querySelector('.bg-blue-600, .bg-yellow-600, .bg-green-600');
-        const statusElement = container.querySelector('.text-green-400, .text-yellow-400, .text-blue-400');
-        const progressText = container.querySelector('.text-sm.text-gray-400');
-
-        if (!progressBar || !statusElement || !progressText) return;
-
-        const progress = this.aiTrainingStudio.modules.progress.getProgress(modelType) || 0;
-        
-        // Update progress bar
-        progressBar.style.width = `${progress}%`;
-        
-        // Update progress text
-        progressText.textContent = `${Math.round(progress)}% Complete`;
-        
-        // Update status and colors
-        if (progress >= 100) {
-            statusElement.textContent = 'Complete';
-            statusElement.className = 'text-green-400';
-            progressBar.className = 'bg-green-600 h-2 rounded-full';
-        } else if (progress > 0) {
-            statusElement.textContent = 'Training';
-            statusElement.className = 'text-blue-400';
-            progressBar.className = 'bg-blue-600 h-2 rounded-full';
-        } else {
-            statusElement.textContent = 'Queued';
-            statusElement.className = 'text-yellow-400';
-            progressBar.className = 'bg-yellow-600 h-2 rounded-full';
-        }
-    }
-
-    // Start periodic progress updates when training is active
-    startProgressUpdates() {
-        if (this.progressInterval) {
-            clearInterval(this.progressInterval);
-        }
-        
-        this.progressInterval = setInterval(() => {
-            if (this.aiTrainingStudio && this.aiTrainingStudio.isTraining) {
-                this.updateTrainingProgressBars();
+        models.forEach(model => {
+            const progressBar = document.getElementById(`${model.id}-progress`);
+            const progressBarText = document.getElementById(`${model.id}-progress-text`);
+            const statusText = document.getElementById(`${model.id}-status`);
+            
+            if (progressBar && statusText) {
+                // Get model-specific progress and status or use defaults
+                const modelProgress = progress[model.id] || 0;
+                const modelStatus = status[model.id] || 'waiting';
+                
+                // Update progress bar width
+                progressBar.style.width = `${modelProgress}%`;
+                
+                // Update status text and progress bar style based on status
+                switch (modelStatus) {
+                    case 'waiting':
+                        statusText.textContent = 'Waiting to start';
+                        progressBarText.textContent = '0%';
+                        progressBar.className = 'bg-blue-600'; // Reset to default color
+                        break;
+                    case 'queued':
+                        statusText.textContent = 'Queued';
+                        progressBarText.textContent = `${modelProgress}%`;
+                        progressBar.className = 'bg-yellow-600';
+                        progressBar.style.width = `${modelProgress}%`;
+                        break;
+                    case 'in-progress':
+                        statusText.textContent = 'Training';
+                        progressBarText.textContent = `${modelProgress}%`;
+                        progressBar.className = 'bg-blue-600';
+                        progressBar.style.width = `${modelProgress}%`;
+                        break;
+                    case 'completed':
+                        statusText.textContent = 'Complete';
+                        progressBarText.textContent = '100%';
+                        progressBar.style.width = '100%';
+                        progressBar.className = 'bg-green-600';
+                        break;
+                    case 'failed':
+                        statusText.textContent = 'Failed';
+                        progressBarText.textContent = 'Error';
+                        progressBar.style.width = '100%';
+                        progressBar.className = 'bg-red-600';
+                        progressBar.style.width = `100%`;
+                        break;
+                    default:
+                        statusText.textContent = modelStatus; // Display custom status
+                        progressBar.className = 'bg-blue-600';
+                        progressBar.style.width = `${modelProgress}%`;
+                }
             }
-        }, 500); // Update every 500ms
+        });
     }
 
-    stopProgressUpdates() {
-        if (this.progressInterval) {
-            clearInterval(this.progressInterval);
-            this.progressInterval = null;
-        }
+    handleStartTraining() {
+        console.log('Start Training button pressed');
+        this.updateTrainingProgressBars(
+            {
+                'object-detection': 10,
+                'gesture-recognition': 20,
+                'voice-recognition': 30
+            },
+            {
+                'object-detection': 'in-progress',
+                'gesture-recognition': 'in-progress',
+                'voice-recognition': 'in-progress'
+            }
+        );
     }
 
-    // AI Training Studio handlers
-    async handleStartTraining() {
-        console.log('handleStartTraining called');
-        console.log('aiTrainingStudio:', this.aiTrainingStudio);
-        console.log('aiTrainingStudio.isTraining:', this.aiTrainingStudio?.isTraining);
-        
-        if (!this.aiTrainingStudio) {
-            this.logToConsole(`AI Training Studio not initialized, ${aiTrainingStudio}`, 'error');
-            return;
-        }
-
-        try {
-            this.logToConsole('Starting AI training session...', 'info');
-            this.updateButtonState('start-training-btn', true);
-            
-            await this.aiTrainingStudio.startTrainingSession();
-            
-            this.logToConsole('Training session started successfully', 'success');
-            this.updateTrainingProgressBars();
-            
-            // Start periodic progress updates
-            this.startProgressUpdates();
-            
-        } catch (error) {
-            console.error('Error in handleStartTraining:', error);
-            this.logToConsole(`Failed to start training: ${error.message}`, 'error');
-        } finally {
-            this.updateButtonState('start-training-btn', false);
-        }
+    handleDeployModel() {
+        console.log('Deploy Model button pressed');
     }
 
-    async handleDeployModel() {
-        if (!this.aiTrainingStudio) {
-            this.logToConsole('AI Training Studio not initialized', 'error');
-            return;
-        }
-
-        try {
-            this.logToConsole('Deploying trained model...', 'info');
-            this.updateButtonState('deploy-model-btn', true);
-            
-            await this.aiTrainingStudio.modules.deployment.deployModel();
-            
-            this.logToConsole('Model deployed successfully', 'success');
-            
-        } catch (error) {
-            this.logToConsole(`Failed to deploy model: ${error.message}`, 'error');
-        } finally {
-            this.updateButtonState('deploy-model-btn', false);
-        }
+    handleExportData() {
+        console.log('Export Data button pressed');
     }
 
-    async handleExportData() {
-        if (!this.aiTrainingStudio) {
-            this.logToConsole('AI Training Studio not initialized', 'error');
-            return;
-        }
+    handleResetModel() {
+        console.log('Reset Model button pressed');
 
-        try {
-            this.logToConsole('Exporting training data...', 'info');
-            this.updateButtonState('export-data-btn', true);
-            
-            const data = await this.aiTrainingStudio.modules.dataCollection.exportData();
-            
-            this.logToConsole(`Exported ${data.samples} training samples`, 'success');
-            
-        } catch (error) {
-            this.logToConsole(`Failed to export data: ${error.message}`, 'error');
-        } finally {
-            this.updateButtonState('export-data-btn', false);
-        }
-    }
+        // Reset all training progress bars
+        this.updateTrainingProgressBars(
+            {
+                'object-detection': 0,
+                'gesture-recognition': 0,
+                'voice-recognition': 0
+            },
+            {
+                'object-detection': 'waiting',
+                'gesture-recognition': 'waiting',
+                'voice-recognition': 'waiting'
+            }
+        );
 
-    async handleResetModel() {
-        if (!this.aiTrainingStudio) {
-            this.logToConsole('AI Training Studio not initialized', 'error');
-            return;
-        }
-
-        try {
-            this.logToConsole('Resetting AI models...', 'warning');
-            this.updateButtonState('reset-model-btn', true);
-            
-            // Stop progress updates
-            this.stopProgressUpdates();
-            
-            await this.aiTrainingStudio.modules.modelTraining.resetModels();
-            
-            this.logToConsole('Models reset successfully', 'success');
-            this.updateTrainingProgressBars();
-            
-        } catch (error) {
-            this.logToConsole(`Failed to reset models: ${error.message}`, 'error');
-        } finally {
-            this.updateButtonState('reset-model-btn', false);
-        }
     }
 
     // Console output functionality
-    logToConsole(message, type = 'info') {
+    logToConsole(message, type = 'info', error = null) {
         const consoleOutput = document.getElementById('ai-console-output');
         if (!consoleOutput) return;
 
         const timestamp = new Date().toLocaleTimeString();
-        const logEntry = document.createElement('div');
-        
-        let colorClass = 'text-gray-400';
+        let color = '#00ff00';
         let prefix = 'ℹ️';
         
         switch (type) {
             case 'error':
-                colorClass = 'text-red-400';
+                color = '#ff0000';
                 prefix = '❌';
                 break;
             case 'success':
-                colorClass = 'text-green-400';
+                color = '#00ff00';
                 prefix = '✅';
                 break;
             case 'warning':
-                colorClass = 'text-yellow-400';
+                color = '#ffff00';
                 prefix = '⚠️';
                 break;
-            case 'info':
-            default:
-                colorClass = 'text-blue-400';
-                prefix = 'ℹ️';
-                break;
         }
-        
-        logEntry.className = colorClass;
-        logEntry.innerHTML = `<span class="text-gray-500">[${timestamp}]</span> ${prefix} ${message}`;
+
+        // Get file and line information
+        let fileInfo = '';
+        if (error && error.stack) {
+            // Parse stack trace to get file and line
+            const stackLines = error.stack.split('\n');
+            for (const line of stackLines) {
+                if (line.includes('.js:') && !line.includes('app.js')) {
+                    // Extract file name and line number
+                    const match = line.match(/([^/\\]+\.js):(\d+):(\d+)/);
+                    if (match) {
+                        fileInfo = ` [${match[1]}:${match[2]}]`;
+                        break;
+                    }
+                }
+            }
+        } else {
+            // Try to get caller information using Error stack
+            try {
+                const error = new Error();
+                const stackLines = error.stack.split('\n');
+                for (const line of stackLines) {
+                    if (line.includes('.js:') && !line.includes('app.js') && !line.includes('logToConsole')) {
+                        const match = line.match(/([^/\\]+\.js):(\d+):(\d+)/);
+                        if (match) {
+                            fileInfo = ` [${match[1]}:${match[2]}]`;
+                            break;
+                        }
+                    }
+                }
+            } catch (e) {
+                // Fallback if stack trace parsing fails
+                fileInfo = '';
+            }
+        }
+
+        const logEntry = document.createElement('div');
+        logEntry.style.color = color;
+        logEntry.innerHTML = `[${timestamp}] ${prefix} ${message}${fileInfo}`;
         
         consoleOutput.appendChild(logEntry);
         consoleOutput.scrollTop = consoleOutput.scrollHeight;
@@ -643,44 +582,6 @@ class ARControlCenter {
             notification.remove();
         }, 5000);
     }
-
-    initializeAITrainingStudio() {
-        console.log('initializeAITrainingStudio called');
-        try {
-            console.log('Creating AI Training Studio instance...');
-            this.aiTrainingStudio = new AITrainingStudio();
-            console.log('AI Training Studio instance created:', this.aiTrainingStudio);
-            
-            // Set up progress update listeners
-            if (this.aiTrainingStudio.modules.progress) {
-                console.log('Setting up progress update listeners...');
-                this.aiTrainingStudio.modules.progress.onProgressUpdate = (progress) => {
-                    console.log('Progress update received:', progress);
-                    this.updateTrainingProgressBars();
-                    if (progress.modelType) {
-                        this.logToConsole(`${progress.modelType} training: ${Math.round(progress.modelProgress)}%`, 'info');
-                    } else {
-                        this.logToConsole(`Overall training progress: ${Math.round(progress.percentage)}%`, 'info');
-                    }
-                };
-            }
-            
-            // Initialize the AI Training Studio immediately
-            console.log('Initializing AI Training Studio...');
-            this.aiTrainingStudio.initialize().then(() => {
-                console.log('AI Training Studio initialized successfully');
-                this.logToConsole('AI Training Studio initialized successfully', 'success');
-                this.updateTrainingProgressBars();
-            }).catch(error => {
-                console.error('AI Training Studio initialization error:', error);
-                this.logToConsole(`Error initializing AI Training Studio: ${error.message}`, 'error');
-            });
-            
-        } catch (error) {
-            console.error('Error creating AI Training Studio:', error);
-            this.logToConsole(`Error creating AI Training Studio: ${error.message}`, 'error');
-        }
-    }
 }
 
 // Initialize the application when DOM is loaded
@@ -691,4 +592,4 @@ document.addEventListener('DOMContentLoaded', () => {
 // Export for potential module usage
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = ARControlCenter;
-} 
+}
