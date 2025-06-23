@@ -1,5 +1,8 @@
 // AR Glasses Control Center - Main Application Script
 
+import { logToConsole } from './logToConsole.js';
+import { updateTrainingProgressBars } from './updateProgressBars.js';
+
 class ARControlCenter {
     constructor() {
         this.currentSection = 'dashboard';
@@ -15,7 +18,6 @@ class ARControlCenter {
 
     setupNavigation() {
         const navItems = document.querySelectorAll('.nav-item');
-        const contentSections = document.querySelectorAll('.content-section');
 
         navItems.forEach(item => {
             item.addEventListener('click', (e) => {
@@ -260,74 +262,13 @@ class ARControlCenter {
 
     // //
 
-    updateTrainingProgressBars(progress = {}, status = {}) {
-        const models = [
-            { id: 'gesture-recognition' },
-            { id: 'object-detection' },
-            { id: 'voice-recognition' }
-        ];
-
-        models.forEach(model => {
-            const progressBar = document.getElementById(`${model.id}-progress`);
-            const progressBarText = document.getElementById(`${model.id}-progress-text`);
-            const statusText = document.getElementById(`${model.id}-status`);
-            
-            if (progressBar && statusText) {
-                // Get model-specific progress and status or use defaults
-                const modelProgress = progress[model.id] || 0;
-                const modelStatus = status[model.id] || 'waiting';
-                
-                // Update progress bar width
-                progressBar.style.width = `${modelProgress}%`;
-                
-                // Update status text and progress bar style based on status
-                switch (modelStatus) {
-                    case 'waiting':
-                        statusText.textContent = 'Waiting to start';
-                        progressBarText.textContent = '0%';
-                        progressBar.className = 'bg-blue-600'; // Reset to default color
-                        break;
-                    case 'queued':
-                        statusText.textContent = 'Queued';
-                        progressBarText.textContent = `${modelProgress}%`;
-                        progressBar.className = 'bg-yellow-600';
-                        progressBar.style.width = `${modelProgress}%`;
-                        break;
-                    case 'in-progress':
-                        statusText.textContent = 'Training';
-                        progressBarText.textContent = `${modelProgress}%`;
-                        progressBar.className = 'bg-blue-600';
-                        progressBar.style.width = `${modelProgress}%`;
-                        break;
-                    case 'completed':
-                        statusText.textContent = 'Complete';
-                        progressBarText.textContent = '100%';
-                        progressBar.style.width = '100%';
-                        progressBar.className = 'bg-green-600';
-                        break;
-                    case 'failed':
-                        statusText.textContent = 'Failed';
-                        progressBarText.textContent = 'Error';
-                        progressBar.style.width = '100%';
-                        progressBar.className = 'bg-red-600';
-                        progressBar.style.width = `100%`;
-                        break;
-                    default:
-                        statusText.textContent = modelStatus; // Display custom status
-                        progressBar.className = 'bg-blue-600';
-                        progressBar.style.width = `${modelProgress}%`;
-                }
-            }
-        });
-    }
-
     handleStartTraining() {
         console.log('Start Training button pressed');
-        this.updateTrainingProgressBars(
+        updateTrainingProgressBars(
             {
-                'object-detection': 10,
-                'gesture-recognition': 20,
-                'voice-recognition': 30
+                'object-detection': 0,
+                'gesture-recognition': 0,
+                'voice-recognition': 0
             },
             {
                 'object-detection': 'in-progress',
@@ -335,6 +276,13 @@ class ARControlCenter {
                 'voice-recognition': 'in-progress'
             }
         );
+
+        logToConsole('Training started...', 'success');
+        this.updateButtonState('start-training-btn', false);
+
+
+
+        // TODO: Provide functions to 
     }
 
     handleDeployModel() {
@@ -349,7 +297,7 @@ class ARControlCenter {
         console.log('Reset Model button pressed');
 
         // Reset all training progress bars
-        this.updateTrainingProgressBars(
+        updateTrainingProgressBars(
             {
                 'object-detection': 0,
                 'gesture-recognition': 0,
@@ -362,78 +310,7 @@ class ARControlCenter {
             }
         );
 
-    }
-
-    // Console output functionality
-    logToConsole(message, type = 'info', error = null) {
-        const consoleOutput = document.getElementById('ai-console-output');
-        if (!consoleOutput) return;
-
-        const timestamp = new Date().toLocaleTimeString();
-        let color = '#00ff00';
-        let prefix = 'ℹ️';
-        
-        switch (type) {
-            case 'error':
-                color = '#ff0000';
-                prefix = '❌';
-                break;
-            case 'success':
-                color = '#00ff00';
-                prefix = '✅';
-                break;
-            case 'warning':
-                color = '#ffff00';
-                prefix = '⚠️';
-                break;
-        }
-
-        // Get file and line information
-        let fileInfo = '';
-        if (error && error.stack) {
-            // Parse stack trace to get file and line
-            const stackLines = error.stack.split('\n');
-            for (const line of stackLines) {
-                if (line.includes('.js:') && !line.includes('app.js')) {
-                    // Extract file name and line number
-                    const match = line.match(/([^/\\]+\.js):(\d+):(\d+)/);
-                    if (match) {
-                        fileInfo = ` [${match[1]}:${match[2]}]`;
-                        break;
-                    }
-                }
-            }
-        } else {
-            // Try to get caller information using Error stack
-            try {
-                const error = new Error();
-                const stackLines = error.stack.split('\n');
-                for (const line of stackLines) {
-                    if (line.includes('.js:') && !line.includes('app.js') && !line.includes('logToConsole')) {
-                        const match = line.match(/([^/\\]+\.js):(\d+):(\d+)/);
-                        if (match) {
-                            fileInfo = ` [${match[1]}:${match[2]}]`;
-                            break;
-                        }
-                    }
-                }
-            } catch (e) {
-                // Fallback if stack trace parsing fails
-                fileInfo = '';
-            }
-        }
-
-        const logEntry = document.createElement('div');
-        logEntry.style.color = color;
-        logEntry.innerHTML = `[${timestamp}] ${prefix} ${message}${fileInfo}`;
-        
-        consoleOutput.appendChild(logEntry);
-        consoleOutput.scrollTop = consoleOutput.scrollHeight;
-        
-        // Keep only last 50 entries
-        while (consoleOutput.children.length > 50) {
-            consoleOutput.removeChild(consoleOutput.firstChild);
-        }
+        logToConsole('Model reset successfully', 'success');
     }
 
     updateButtonState(buttonId, isLoading) {
@@ -461,7 +338,7 @@ class ARControlCenter {
                     button.textContent = 'Reset Model';
                     break;
             }
-            button.className = button.className.replace(' opacity-50', '');
+            button.className = button.className.replace('opacity-50', '');
         }
     }
 
